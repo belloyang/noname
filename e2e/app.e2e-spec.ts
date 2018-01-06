@@ -1,6 +1,6 @@
 import { ExampleAppPage } from './app.po';
 
-describe('example-app App', function() {
+describe('Bings App', function() {
   let page: ExampleAppPage;
 
   beforeEach(() => {
