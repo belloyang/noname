@@ -9,10 +9,8 @@ import { DashboardComponent } from './dashboard.component';
   imports: [
     CommonModule,
     MaterialModule,
-    RouterModule.forChild([
-      { path: '', component: DashboardComponent },
-  ])
+    RouterModule.forChild([{ path: '', component: DashboardComponent }]),
   ],
-  declarations: [DashboardComponent]
+  declarations: [DashboardComponent],
 })
-export class DashboardModule { }
+export class DashboardModule {}

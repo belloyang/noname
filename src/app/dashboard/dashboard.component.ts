@@ -7,13 +7,10 @@ import { Component, OnInit } from '@angular/core';
       dashboard Works!
     </p>
   `,
-  styles: []
+  styles: [],
 })
 export class DashboardComponent implements OnInit {
+  constructor() {}
 
-  constructor() { }
-
-  ngOnInit() {
-  }
-
+  ngOnInit() {}
 }
