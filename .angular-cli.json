@@ -19,6 +19,9 @@
       "testTsconfig": "tsconfig.spec.json",
       "prefix": "bc",
       "styles": [
+        
+        "./assets/sass/material-dashboard.scss",
+        "./assets/css/demo.css",
         "styles.css"
       ],
       "scripts": [],

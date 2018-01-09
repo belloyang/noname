@@ -2,11 +2,7 @@ import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'bc-dashboard',
-  template: `
-    <p>
-      dashboard Works!
-    </p>
-  `,
+  templateUrl: "./dashboard.html",
   styles: [],
 })
 export class DashboardComponent implements OnInit {
