@@ -22,6 +22,7 @@ import { schema } from './db';
 import { AppComponent } from './core/containers/app';
 import { environment } from '../environments/environment';
 
+
 @NgModule({
   imports: [
     CommonModule,
@@ -74,6 +75,9 @@ import { environment } from '../environments/environment';
     CoreModule.forRoot(),
 
     AuthModule.forRoot(),
+  ],
+  providers:[
+    
   ],
   bootstrap: [AppComponent],
 })

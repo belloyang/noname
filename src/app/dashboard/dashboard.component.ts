@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import {WampTicketService} from '../auth/services/wamp-ticket.service'
+import { EventMessage } from 'thruway.js/src/Messages/EventMessage';
+import { ResultMessage } from 'thruway.js/src/Messages/ResultMessage';
 
 @Component({
   selector: 'bc-dashboard',
@@ -6,7 +9,14 @@ import { Component, OnInit } from '@angular/core';
   styles: [],
 })
 export class DashboardComponent implements OnInit {
-  constructor() {}
+  constructor(private wamp:WampTicketService) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    console.log("DashboardComponent onInit");
+    this.wamp.call("test.rpc",[])
+    .map((r: ResultMessage) => r.args[0])
+    .subscribe(r => console.log(r));
+  }
+
+  
 }
