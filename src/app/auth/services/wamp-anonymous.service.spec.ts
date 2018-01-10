@@ -5,11 +5,14 @@ import { WampAnonymousService } from './wamp-anonymous.service';
 describe('WampAnonymousService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [WampAnonymousService]
+      providers: [WampAnonymousService],
     });
   });
 
-  it('should be created', inject([WampAnonymousService], (service: WampAnonymousService) => {
-    expect(service).toBeTruthy();
-  }));
+  it(
+    'should be created',
+    inject([WampAnonymousService], (service: WampAnonymousService) => {
+      expect(service).toBeTruthy();
+    })
+  );
 });

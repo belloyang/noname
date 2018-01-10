@@ -3,8 +3,7 @@ import { Client } from 'thruway.js';
 import { Observable } from 'rxjs/Observable';
 
 @Injectable()
-export class WampTicketService extends Client{
-
+export class WampTicketService extends Client {
   constructor() {
     super('ws://localhost:9000/ws', 'emc.daemon', {
       authmethods: ['ticket'],
@@ -18,8 +17,6 @@ export class WampTicketService extends Client{
       let ret = Observable.of('deadpool');
       console.log(ticketMethod, ret);
       return ret;
-
     });
   }
-
 }

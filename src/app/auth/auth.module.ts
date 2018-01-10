@@ -26,11 +26,7 @@ export class AuthModule {
   static forRoot(): ModuleWithProviders {
     return {
       ngModule: RootAuthModule,
-      providers: [
-        AuthService, 
-        AuthGuard,
-        WampTicketService
-      ],
+      providers: [AuthService, AuthGuard, WampTicketService],
     };
   }
 }
