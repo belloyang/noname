@@ -31,9 +31,32 @@
 const Thruway = require("thruway.js");
 const Rx = require("rxjs");
 
-const wamp = new Thruway.Client('ws://127.0.0.1:9000/ws', 'noname.daemon');
+
+
+
+// // A poor man's user database.
+// //
+// var USERDB = {
+//     // A user with an unsalted password
+//     'joe': {
+//        'secret': 'deadpool',
+//        'role': 'frontend'
+//     },
+//     // A user with a salted password
+//     'bing': {
+//         'secret':'mypassword',
+//         'role':'frontend'
+//     }
+//  };
+
+
+
+
+ 
+
+const wamp = new Thruway.Client('ws://127.0.0.1:9200/ws', 'noname.daemon');
 // var connection = new autobahn.Connection({
-//    url: 'ws://127.0.0.1:9000/ws',
+//    url: 'ws://127.0.0.1:9200/ws',
 //    realm: 'realm1'}
 // );
 
@@ -54,7 +77,8 @@ const wamp = new Thruway.Client('ws://127.0.0.1:9000/ws', 'noname.daemon');
 //       }
 //    );
     
-  
+
+
 
    // REGISTER a procedure for remote calling
    //
@@ -102,29 +126,29 @@ const wamp = new Thruway.Client('ws://127.0.0.1:9000/ws', 'noname.daemon');
 
    // PUBLISH and CALL every second .. forever
    //
-   var counter = 0;
-   setInterval(function () {
+//    var counter = 0;
+//    setInterval(function () {
 
-      // PUBLISH an event
-      //
-      wamp.publish('com.example.oncounter', [counter]);
-      console.log("published to 'oncounter' with counter " + counter);
+//       // PUBLISH an event
+//       //
+//       wamp.publish('com.example.oncounter', [counter]);
+//       console.log("published to 'oncounter' with counter " + counter);
 
-      // CALL a remote procedure
-      //
-      wamp.call('com.example.mul2', [counter, 3]).subscribe(
-         function (res) {
-            console.log("mul2() called with result: " + res);
-         },
-         function (err) {
-            if (err.error !== 'wamp.error.no_such_procedure') {
-               console.log('call of mul2() failed: ' + err);
-            }
-         }
-      );
+//       // CALL a remote procedure
+//       //
+//       wamp.call('com.example.mul2', [counter, 3]).subscribe(
+//          function (res) {
+//             console.log("mul2() called with result: " + res);
+//          },
+//          function (err) {
+//             if (err.error !== 'wamp.error.no_such_procedure') {
+//                console.log('call of mul2() failed: ' + err);
+//             }
+//          }
+//       );
 
-      counter += 1;
-   }, 1000);
+//       counter += 1;
+//    }, 1000);
 // };
 
 // connection.open();

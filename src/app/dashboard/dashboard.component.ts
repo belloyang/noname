@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { WampTicketService } from '../auth/services/wamp-ticket.service';
-import {WampAnonymousService} from '../auth/services/wamp-anonymous.service';
+// import {WampAnonymousService} from '../auth/services/wamp-anonymous.service';
 import { EventMessage } from 'thruway.js/src/Messages/EventMessage';
 import { ResultMessage } from 'thruway.js/src/Messages/ResultMessage';
 
@@ -10,7 +10,7 @@ import { ResultMessage } from 'thruway.js/src/Messages/ResultMessage';
   styles: [],
 })
 export class DashboardComponent implements OnInit {
-  constructor(private wamp: WampAnonymousService) {}
+  constructor(private wamp: WampTicketService) {}
 
   ngOnInit() {
     console.log('DashboardComponent onInit');
