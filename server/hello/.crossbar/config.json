@@ -6,8 +6,48 @@
             "type": "router",
             "realms": [
                 {
-                    "name": "realm1",
+                    "name": "noname.daemon",
                     "roles": [
+                        {
+                            "name": "authenticator",
+                            "permissions": [
+                                {
+                                    "uri": "noname.authenticate",
+                                    "match": "exact",
+                                    "allow": {
+                                        "call": false,
+                                        "register": true,
+                                        "publish": false,
+                                        "subscribe": false
+                                    },
+                                    "disclose": { 
+                                        "caller": false,
+                                        "publisher": false
+                                    },
+                                    "cache": true
+                                }
+                            ]
+                        },
+                        {
+                            "name": "frontend",
+                            "permissions": [
+                                {
+                                    "uri": "",
+                                    "match": "prefix",
+                                    "allow": {
+                                        "call": true,
+                                        "register": true,
+                                        "publish": true,
+                                        "subscribe": true
+                                    },
+                                    "disclose": { 
+                                        "caller": false,
+                                        "publisher": false
+                                    },
+                                    "cache": true
+                                }
+                            ]
+                        },
                         {
                             "name": "anonymous",
                             "permissions": [
@@ -36,16 +76,40 @@
                     "type": "web",
                     "endpoint": {
                         "type": "tcp",
-                        "port": 8080
+                        "port": 9000
                     },
                     "paths": {
                         "/": {
                             "type": "static",
-                            "directory": "../web"
+                            "directory": "../../../dist"
                         },
                         "ws": {
-                            "type": "websocket"
-                        }
+                            "type": "websocket",
+                            "serializers": [
+                                "json"
+                            ],
+                            "auth": {
+                                    "ticket": {
+                                        "type": "dynamic",
+                                        "authenticator": "noname.authenticate"
+                                     },
+                                      "anonymous": {
+                                             "type": "static",
+                                            "role": "anonymous"
+                                    },
+                                     "wampcra": {
+                                            "type": "static",
+                                              "users": {
+                                                    "joe": {
+                                                         "secret": "deadpool",
+                                                         "role": "frontend",
+                                                        "iterations": 1000,
+                                                          "keylen": 20
+                                                    }
+                                             }
+                                    }
+                            }
+                        } 
                     }
                 }
             ]
@@ -65,6 +129,31 @@
                     "action": "restart"
                 }
             }
+        },
+        {
+            "type": "container",
+            "options": {
+                "pythonpath": [
+                    ".."
+                ]
+            },
+            "components": [
+                {
+                    "type": "class",
+                    "classname": "authenticator.AuthenticatorSession",
+                    "realm": "noname.daemon",
+                     "transport": {
+                        "type": "websocket",
+                        "endpoint": {
+                            "type": "tcp",
+                            "host": "127.0.0.1",
+                            "port": 9000
+                        },
+                        "url": "ws://127.0.0.1:9000/ws"
+                    }
+                }
+            ]
         }
+
     ]
 }

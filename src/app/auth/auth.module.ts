@@ -14,6 +14,7 @@ import { AuthEffects } from './effects/auth.effects';
 import { reducers } from './reducers';
 
 import { WampTicketService } from './services/wamp-ticket.service';
+import {WampAnonymousService} from './services/wamp-anonymous.service';
 
 export const COMPONENTS = [LoginPageComponent, LoginFormComponent];
 
@@ -26,7 +27,7 @@ export class AuthModule {
   static forRoot(): ModuleWithProviders {
     return {
       ngModule: RootAuthModule,
-      providers: [AuthService, AuthGuard, WampTicketService],
+      providers: [AuthService, AuthGuard, WampTicketService,WampAnonymousService],
     };
   }
 }
