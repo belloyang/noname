@@ -5,7 +5,7 @@ import { Observable } from 'rxjs/Observable';
 @Injectable()
 export class WampTicketService extends Client {
   constructor() {
-    super('ws://localhost:9000/ws', 'noname.daemon', {
+    super('ws://localhost:9200/ws', 'noname.daemon', {
       authmethods: ['ticket'],
       authid: 'joe',
     });
