@@ -118,7 +118,7 @@
             "type": "guest",
             "executable": "node",
             "arguments": [
-                "hello.js"
+                "backend.js"
             ],
             "options": {
                 "workdir": "../node",

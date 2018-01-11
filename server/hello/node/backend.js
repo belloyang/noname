@@ -26,30 +26,35 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 
-var autobahn = require('autobahn');
+// var autobahn = require('autobahn');
 
-var connection = new autobahn.Connection({
-   url: 'ws://127.0.0.1:8080/ws',
-   realm: 'realm1'}
-);
+const Thruway = require("thruway.js");
+const Rx = require("rxjs");
 
-connection.onopen = function (session) {
+const wamp = new Thruway.Client('ws://127.0.0.1:9000/ws', 'noname.daemon');
+// var connection = new autobahn.Connection({
+//    url: 'ws://127.0.0.1:9000/ws',
+//    realm: 'realm1'}
+// );
 
-   // SUBSCRIBE to a topic and receive events
-   //
-   function onhello (args) {
-      var msg = args[0];
-      console.log("event for 'onhello' received: " + msg);
-   }
-   session.subscribe('com.example.onhello', onhello).then(
-      function (sub) {
-         console.log("subscribed to topic 'onhello'");
-      },
-      function (err) {
-         console.log("failed to subscribed: " + err);
-      }
-   );
+// connection.onopen = function (wamp) {
 
+//    // SUBSCRIBE to a topic and receive events
+//    //
+//    function onhello (args) {
+//       var msg = args[0];
+//       console.log("event for 'onhello' received: " + msg);
+//    }
+//    wamp.subscribe('com.example.onhello', onhello).subscribe(
+//       function (sub) {
+//          console.log("subscribed to topic 'onhello'");
+//       },
+//       function (err) {
+//          console.log("failed to subscribed: " + err);
+//       }
+//    );
+    
+  
 
    // REGISTER a procedure for remote calling
    //
@@ -59,13 +64,39 @@ connection.onopen = function (session) {
       console.log("add2() called with " + x + " and " + y);
       return x + y;
    }
-   session.register('com.example.add2', add2).then(
+
+
+   function add1 (arg0, arg1) {
+    var x = arg0;
+    var y = arg1;
+    console.log("add1() called:", arg0,arg1);
+    if(x && y){
+        console.log("add1() called with " + x + " and " + y);
+        return x + y;
+    }
+    else{
+        return 0;
+    }
+    
+  }
+
+   wamp.register('com.example.add1', add1).subscribe(
       function (reg) {
-         console.log("procedure add2() registered");
+         console.log("procedure add1() registered");
       },
       function (err) {
-         console.log("failed to register procedure: " + err);
+         console.log("failed to register procedure: " , err);
       }
+   );
+
+
+   wamp.register('com.example.add2', add2).subscribe(
+    function (reg) {
+       console.log("procedure add2() registered", reg);
+    },
+    function (err) {
+       console.log("failed to register procedure: " , err);
+    }
    );
 
 
@@ -76,12 +107,12 @@ connection.onopen = function (session) {
 
       // PUBLISH an event
       //
-      session.publish('com.example.oncounter', [counter]);
+      wamp.publish('com.example.oncounter', [counter]);
       console.log("published to 'oncounter' with counter " + counter);
 
       // CALL a remote procedure
       //
-      session.call('com.example.mul2', [counter, 3]).then(
+      wamp.call('com.example.mul2', [counter, 3]).subscribe(
          function (res) {
             console.log("mul2() called with result: " + res);
          },
@@ -94,6 +125,6 @@ connection.onopen = function (session) {
 
       counter += 1;
    }, 1000);
-};
+// };
 
-connection.open();
+// connection.open();

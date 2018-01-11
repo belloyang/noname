@@ -15,8 +15,10 @@ export class DashboardComponent implements OnInit {
   ngOnInit() {
     console.log('DashboardComponent onInit');
     this.wamp
-      .call('test.rpc', [])
-      .map((r: ResultMessage) => r.args[0])
+      .call('com.example.add1', [1, 2])
+      .map((r: ResultMessage) => {
+        console.log("com.example.add1:",r);
+        return r.args[0];})
       .subscribe(r => console.log(r));
   }
 }
