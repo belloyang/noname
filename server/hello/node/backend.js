@@ -31,9 +31,9 @@
 const Thruway = require("thruway.js");
 const Rx = require("rxjs");
 
+const userDB = require("./user-login-info.js");
 
-
-
+console.log("userInfo:",userDB.UserLoginInfo);
 // // A poor man's user database.
 // //
 // var USERDB = {
@@ -78,7 +78,36 @@ const wamp = new Thruway.Client('ws://127.0.0.1:9200/ws', 'noname.daemon');
 //    );
     
 
+    function authenticate(username, password){
+        console.log("authenticate called:",username,password);
+        for (let user of userDB.UserLoginInfo){
+            if(user.username == username){
+                if(user.password == password)
+                {
+                    return true;
+                }
+                else{
+                    console.error("invalid password");
+                    throw "invalid password";
+                }
+            }
+            else{
+                continue;
+            }
+            
+        }
+        console.error( "no user found with username:" +username);
+        throw "no user found with username:" +username;
+    }
 
+    wamp.register('noname.backend.authenticate', authenticate).subscribe(
+        function (reg) {
+           console.log("procedure noname.backend.authenticate registered");
+        },
+        function (err) {
+           console.log("failed to register procedure: noname.backend.authenticate" , err);
+        }
+     );
 
    // REGISTER a procedure for remote calling
    //
