@@ -3,12 +3,12 @@ import { of } from 'rxjs/observable/of';
 import { _throw } from 'rxjs/observable/throw';
 import { User, Authenticate } from '../models/user';
 import { UserLoginInfo } from './user-login-info';
-import {WampTicketService} from './wamp-ticket.service';
-import {EventMessage} from 'thruway.js/src/Messages/EventMessage';
-import {ResultMessage} from 'thruway.js/src/Messages/ResultMessage';
+import { WampTicketService } from './wamp-ticket.service';
+import { EventMessage } from 'thruway.js/src/Messages/EventMessage';
+import { ResultMessage } from 'thruway.js/src/Messages/ResultMessage';
 @Injectable()
 export class AuthService {
-  constructor(private wamp:WampTicketService) {}
+  constructor(private wamp: WampTicketService) {}
 
   login({ username, password }: Authenticate) {
     /**
@@ -25,19 +25,20 @@ export class AuthService {
     //     }
     //   }
     // }
-    let authInfo = {username,password};
-    console.log("login:", authInfo);
-    return this.wamp.call("noname.backend.authenticate",[username,password]).map(
-      (ret:ResultMessage)=>{
-        console.log("noname.backend.authenticate returns:",ret.args[0]);
-        return { name: 'User' };
-    },
-    (err:any)=>{
-      console.log("noname.backend.authenticate failed",err);
-      _throw(err);
-    });
-
-    
+    let authInfo = { username, password };
+    console.log('login:', authInfo);
+    return this.wamp
+      .call('noname.backend.authenticate', [username, password])
+      .map(
+        (ret: ResultMessage) => {
+          console.log('noname.backend.authenticate returns:', ret.args[0]);
+          return { name: 'User' };
+        },
+        (err: any) => {
+          console.log('noname.backend.authenticate failed', err);
+          _throw(err);
+        }
+      );
   }
 
   logout() {

@@ -9,12 +9,15 @@ export class WampTicketService extends Client {
 
     this.onChallenge(challenge => {
       console.log('onChallenge called:', challenge);
-      
-      return Observable.of('deadpool');
-  
-    });
-    this.onOpen.subscribe(data=>console.log("WampTicketService onOpen",data));
 
-    this.onClose.subscribe(data => console.log("WampTicketService onClose",data));
+      return Observable.of('deadpool');
+    });
+    this.onOpen.subscribe(data =>
+      console.log('WampTicketService onOpen', data)
+    );
+
+    this.onClose.subscribe(data =>
+      console.log('WampTicketService onClose', data)
+    );
   }
 }
