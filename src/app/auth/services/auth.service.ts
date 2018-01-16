@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { of } from 'rxjs/observable/of';
 import { _throw } from 'rxjs/observable/throw';
 import { User, Authenticate } from '../models/user';
-import { UserLoginInfo } from './user-login-info';
+
 import { WampTicketService } from './wamp-ticket.service';
 import { EventMessage } from 'thruway.js/src/Messages/EventMessage';
 import { ResultMessage } from 'thruway.js/src/Messages/ResultMessage';

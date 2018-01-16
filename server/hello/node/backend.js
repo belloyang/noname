@@ -31,52 +31,149 @@
 const Thruway = require("thruway.js");
 const Rx = require("rxjs");
 
+console.log("****    BACKEND noname.daemon started    ****");
+
+
 const userDB = require("./user-login-info.js");
 
 console.log("userInfo:",userDB.UserLoginInfo);
-// // A poor man's user database.
-// //
-// var USERDB = {
-//     // A user with an unsalted password
-//     'joe': {
-//        'secret': 'deadpool',
-//        'role': 'frontend'
-//     },
-//     // A user with a salted password
-//     'bing': {
-//         'secret':'mypassword',
-//         'role':'frontend'
-//     }
-//  };
 
+//Connect to MongoDB
+
+
+var MongoClient = require('mongodb').MongoClient;
+var url = "mongodb://localhost:27017/mydb";
+
+MongoClient.connect(url, function(err, db) {
+  if (err) throw err;
+
+  var dbo = db.db("mydb");
+  dbo.createCollection("users", function(err, res) {
+    if (err) throw err;
+
+    console.log("Collection users created!");
+    db.close();
+  });
+
+});
 
 
 
  
 
 const wamp = new Thruway.Client('ws://127.0.0.1:9200/ws', 'noname.daemon');
-// var connection = new autobahn.Connection({
-//    url: 'ws://127.0.0.1:9200/ws',
-//    realm: 'realm1'}
-// );
 
-// connection.onopen = function (wamp) {
+    function createUser(username, password){
+        console.log("createUser called");
+        var url = "mongodb://localhost:27017";
+        MongoClient.connect(url, function(err, db) {
+            if (err) throw err;
+            var dbo = db.db("mydb");
+            var userInfo = { name: username, password: password };
+            dbo.collection("users").insertOne(userInfo, function(err, res) {
+            if (err) throw err;
+            console.log("User password info added",username);
+            db.close();
+            });
+        });
 
-//    // SUBSCRIBE to a topic and receive events
-//    //
-//    function onhello (args) {
-//       var msg = args[0];
-//       console.log("event for 'onhello' received: " + msg);
-//    }
-//    wamp.subscribe('com.example.onhello', onhello).subscribe(
-//       function (sub) {
-//          console.log("subscribed to topic 'onhello'");
-//       },
-//       function (err) {
-//          console.log("failed to subscribed: " + err);
-//       }
-//    );
+    }
+
+    wamp.register('noname.backend.create_user',createUser).subscribe(
+        function (reg) {
+            console.log("procedure noname.backend.create_user registered");
+         },
+         function (err) {
+            console.log("failed to register procedure: noname.backend.create_user" , err);
+         }
+    )
     
+    function callback(result){
+        console.log("callback:", result);
+        return result;
+    }
+
+    async function findUserPwd(username){
+        var ret;
+        console.log("findUserPwd:"+username);
+        var promise =  new Promise(
+            function(resolve, reject){
+                MongoClient.connect(url,function(err,db){
+                    if(err){
+                        return reject(err);
+                    }
+                    else {
+                        var dbo = db.db("mydb");
+                        console.log("resolve");
+                        
+                        
+                        ret =  dbo.collection("users").findOne({'name':username});
+                        resolve(ret);
+                           
+                    }
+                       
+                })
+            });
+            console.log("promise:",promise);
+            //let result = await promise;
+            let result = {name:"test"};
+            console.log("result:",result);
+            return result;
+        };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        var lookup = 'sarah';
+        // findUserPwd(lookup).then(ret=>{
+        //     console.log("findUserPwd for "+ lookup+":",ret);
+        // })
+        // .catch(err=>{
+        //     console.error("findUserPwd failed:",err);
+        // });
+       
+        // MongoClient.connect(url).then( (db)=>{
+        //     console.log("Mongodb connected:",db);
+            
+        //     var dbo = db.db("mydb");
+        //     dbo.collection("users").findOne({'name':username}, function(err, result) {
+        //       if (err) throw err;
+        //       console.log("findOne:",result);
+        //       db.close();
+        //       ret = result;
+        //     });
+        //   })
+        //   .catch(err=>{
+        //       console.log("Mongodb connection failed", err);
+        //   });
+       
+    
+
+    wamp.register('noname.backend.get_user_pwd', findUserPwd).subscribe(
+
+        function (reg) {
+            console.log("procedure noname.backend.get_user_pwd registered");
+         },
+         function (err) {
+            console.log("failed to register procedure: noname.backend.get_user_pwd" , err);
+         }
+
+    );
 
     function authenticate(username, password){
         console.log("authenticate called:",username,password);
@@ -84,6 +181,7 @@ const wamp = new Thruway.Client('ws://127.0.0.1:9200/ws', 'noname.daemon');
             if(user.username == username){
                 if(user.password == password)
                 {
+                    console.log("authenticate succeeded!");
                     return true;
                 }
                 else{
@@ -111,14 +209,7 @@ const wamp = new Thruway.Client('ws://127.0.0.1:9200/ws', 'noname.daemon');
 
    // REGISTER a procedure for remote calling
    //
-   function add2 (args) {
-      var x = args[0];
-      var y = args[1];
-      console.log("add2() called with " + x + " and " + y);
-      return x + y;
-   }
-
-
+ 
    function add1 (arg0, arg1) {
     var x = arg0;
     var y = arg1;
@@ -143,41 +234,3 @@ const wamp = new Thruway.Client('ws://127.0.0.1:9200/ws', 'noname.daemon');
    );
 
 
-   wamp.register('com.example.add2', add2).subscribe(
-    function (reg) {
-       console.log("procedure add2() registered", reg);
-    },
-    function (err) {
-       console.log("failed to register procedure: " , err);
-    }
-   );
-
-
-   // PUBLISH and CALL every second .. forever
-   //
-//    var counter = 0;
-//    setInterval(function () {
-
-//       // PUBLISH an event
-//       //
-//       wamp.publish('com.example.oncounter', [counter]);
-//       console.log("published to 'oncounter' with counter " + counter);
-
-//       // CALL a remote procedure
-//       //
-//       wamp.call('com.example.mul2', [counter, 3]).subscribe(
-//          function (res) {
-//             console.log("mul2() called with result: " + res);
-//          },
-//          function (err) {
-//             if (err.error !== 'wamp.error.no_such_procedure') {
-//                console.log('call of mul2() failed: ' + err);
-//             }
-//          }
-//       );
-
-//       counter += 1;
-//    }, 1000);
-// };
-
-// connection.open();
