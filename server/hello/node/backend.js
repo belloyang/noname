@@ -93,9 +93,9 @@ const wamp = new Thruway.Client('ws://127.0.0.1:9200/ws', 'noname.daemon');
         return result;
     }
 
-    async function findUserPwd(username){
+    function findUserInfo(username){
         var ret;
-        console.log("findUserPwd:"+username);
+        console.log("findUserInfo:"+username);
         var promise =  new Promise(
             function(resolve, reject){
                 MongoClient.connect(url,function(err,db){
@@ -118,7 +118,7 @@ const wamp = new Thruway.Client('ws://127.0.0.1:9200/ws', 'noname.daemon');
             //let result = await promise;
             let result = {name:"test"};
             console.log("result:",result);
-            return result;
+            return Rx.Observable.fromPromise(promise);
         };
 
 
@@ -140,12 +140,12 @@ const wamp = new Thruway.Client('ws://127.0.0.1:9200/ws', 'noname.daemon');
 
 
         var lookup = 'sarah';
-        // findUserPwd(lookup).then(ret=>{
-        //     console.log("findUserPwd for "+ lookup+":",ret);
-        // })
-        // .catch(err=>{
-        //     console.error("findUserPwd failed:",err);
-        // });
+        findUserInfo(lookup).subscribe(ret=>{
+            console.log("findUserInfo for "+ lookup+":",ret);
+        },
+        err=>{
+            console.error("findUserInfo failed:",err);
+        });
        
         // MongoClient.connect(url).then( (db)=>{
         //     console.log("Mongodb connected:",db);
@@ -164,7 +164,7 @@ const wamp = new Thruway.Client('ws://127.0.0.1:9200/ws', 'noname.daemon');
        
     
 
-    wamp.register('noname.backend.get_user_pwd', findUserPwd).subscribe(
+    wamp.register('noname.backend.get_user_pwd', findUserInfo).subscribe(
 
         function (reg) {
             console.log("procedure noname.backend.get_user_pwd registered");
@@ -174,6 +174,28 @@ const wamp = new Thruway.Client('ws://127.0.0.1:9200/ws', 'noname.daemon');
          }
 
     );
+    
+    function authenticateFromDb(username,password){
+        var ret;
+        console.log("authenticateFromDb:"+username,password);
+        
+        return findUserInfo(username).switchMap(userInfo=>{
+            console.log("findUserInfo.map:",userInfo)
+            if(userInfo){
+                if(userInfo.password == password){
+                return Rx.Observable.of(userInfo);
+                }
+                else{
+                    return Rx.Observable.throw(new Error("invalid password"));
+                }
+            }
+            else{
+                return Rx.Observable.throw(new Error("invalid username"));
+            }
+            
+        })
+        .catch(err=>Rx.Observable.throw(err));
+    }
 
     function authenticate(username, password){
         console.log("authenticate called:",username,password);
@@ -198,7 +220,7 @@ const wamp = new Thruway.Client('ws://127.0.0.1:9200/ws', 'noname.daemon');
         throw "no user found with username:" +username;
     }
 
-    wamp.register('noname.backend.authenticate', authenticate).subscribe(
+    wamp.register('noname.backend.authenticate', authenticateFromDb).subscribe(
         function (reg) {
            console.log("procedure noname.backend.authenticate registered");
         },

@@ -32,7 +32,9 @@ export class AuthService {
       .map(
         (ret: ResultMessage) => {
           console.log('noname.backend.authenticate returns:', ret.args[0]);
+          
           return { name: 'User' };
+          
         },
         (err: any) => {
           console.log('noname.backend.authenticate failed', err);

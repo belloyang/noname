@@ -23,11 +23,11 @@ export class DashboardComponent implements OnInit {
       .subscribe(r => console.log(r));
 
     this.wamp
-    .call('noname.backend.get_user_pwd',['sarah'])
-    .map((r: ResultMessage) => {
-      console.log('noname.backend.get_user_pwd:', r);
-      return r.args[0];
-    })
-    .subscribe(r => console.log("noname.backend.get_user_pwd:",r));
+      .call('noname.backend.get_user_pwd', ['sarah'])
+      .map((r: ResultMessage) => {
+        console.log('noname.backend.get_user_pwd:', r);
+        return r.args[0];
+      })
+      .subscribe(r => console.log('noname.backend.get_user_pwd:', r));
   }
 }
