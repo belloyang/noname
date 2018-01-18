@@ -58,6 +58,7 @@ export class LoginFormComponent implements OnInit {
   @Input() errorMessage: string | null;
 
   @Output() submitted = new EventEmitter<Authenticate>();
+  @Output() anonymousLogin = new EventEmitter();
 
   form: FormGroup = new FormGroup({
     username: new FormControl(''),
@@ -72,6 +73,10 @@ export class LoginFormComponent implements OnInit {
     if (this.form.valid) {
       this.submitted.emit(this.form.value);
     }
+  }
+
+  loginAnonymously(){
+    this.anonymousLogin.emit();
   }
 
   gotoRegister(){

@@ -2,6 +2,7 @@ import { Action } from '@ngrx/store';
 import { User, Authenticate } from '../models/user';
 
 export const LOGIN = '[Auth] Login';
+export const ANONYMOUS_LOGIN = '[Auth] Anonymous Login';
 export const LOGOUT = '[Auth] Logout';
 export const LOGIN_SUCCESS = '[Auth] Login Success';
 export const LOGIN_FAILURE = '[Auth] Login Failure';
@@ -11,6 +12,12 @@ export class Login implements Action {
   readonly type = LOGIN;
 
   constructor(public payload: Authenticate) {}
+}
+
+export class LoginAnonymously implements Action {
+  readonly type = ANONYMOUS_LOGIN;
+
+  constructor(public payload: any) {}
 }
 
 export class LoginSuccess implements Action {

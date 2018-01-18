@@ -33,6 +33,12 @@ const Rx = require("rxjs");
 
 console.log("****    BACKEND noname.daemon started    ****");
 
+var NonameAPIs = {
+    findUserInfo:null,
+    createUser:null,
+    authenticate:null,
+    authenticateFromDb:null
+}
 
 const userDB = require("./user-login-info.js");
 
@@ -63,7 +69,7 @@ MongoClient.connect(url, function(err, db) {
 
 const wamp = new Thruway.Client('ws://127.0.0.1:9200/ws', 'noname.daemon');
 
-    function createUser(username, password){
+   NonameAPIs.createUser = function(username, password){
         console.log("createUser called");
         var url = "mongodb://localhost:27017";
         MongoClient.connect(url, function(err, db) {
@@ -79,7 +85,7 @@ const wamp = new Thruway.Client('ws://127.0.0.1:9200/ws', 'noname.daemon');
 
     }
 
-    wamp.register('noname.backend.create_user',createUser).subscribe(
+    wamp.register('noname.backend.create_user',NonameAPIs.createUser).subscribe(
         function (reg) {
             console.log("procedure noname.backend.create_user registered");
          },
@@ -88,12 +94,9 @@ const wamp = new Thruway.Client('ws://127.0.0.1:9200/ws', 'noname.daemon');
          }
     )
     
-    function callback(result){
-        console.log("callback:", result);
-        return result;
-    }
+ 
 
-    function findUserInfo(username){
+    NonameAPIs.findUserInfo = function (username){
         var ret;
         console.log("findUserInfo:"+username);
         var promise =  new Promise(
@@ -140,31 +143,17 @@ const wamp = new Thruway.Client('ws://127.0.0.1:9200/ws', 'noname.daemon');
 
 
         var lookup = 'sarah';
-        findUserInfo(lookup).subscribe(ret=>{
+        NonameAPIs.findUserInfo(lookup).subscribe(ret=>{
             console.log("findUserInfo for "+ lookup+":",ret);
         },
         err=>{
             console.error("findUserInfo failed:",err);
         });
        
-        // MongoClient.connect(url).then( (db)=>{
-        //     console.log("Mongodb connected:",db);
-            
-        //     var dbo = db.db("mydb");
-        //     dbo.collection("users").findOne({'name':username}, function(err, result) {
-        //       if (err) throw err;
-        //       console.log("findOne:",result);
-        //       db.close();
-        //       ret = result;
-        //     });
-        //   })
-        //   .catch(err=>{
-        //       console.log("Mongodb connection failed", err);
-        //   });
-       
+    
     
 
-    wamp.register('noname.backend.get_user_pwd', findUserInfo).subscribe(
+    wamp.register('noname.backend.get_user_pwd', NonameAPIs.findUserInfo).subscribe(
 
         function (reg) {
             console.log("procedure noname.backend.get_user_pwd registered");
@@ -175,11 +164,11 @@ const wamp = new Thruway.Client('ws://127.0.0.1:9200/ws', 'noname.daemon');
 
     );
     
-    function authenticateFromDb(username,password){
+    NonameAPIs.authenticateFromDb = function(username,password){
         var ret;
         console.log("authenticateFromDb:"+username,password);
         
-        return findUserInfo(username).switchMap(userInfo=>{
+        return NonameAPIs.findUserInfo(username).switchMap(userInfo=>{
             console.log("findUserInfo.map:",userInfo)
             if(userInfo){
                 if(userInfo.password == password){
@@ -197,7 +186,7 @@ const wamp = new Thruway.Client('ws://127.0.0.1:9200/ws', 'noname.daemon');
         .catch(err=>Rx.Observable.throw(err));
     }
 
-    function authenticate(username, password){
+    NonameAPIs.authenticate = function(username, password){
         console.log("authenticate called:",username,password);
         for (let user of userDB.UserLoginInfo){
             if(user.username == username){
@@ -220,7 +209,7 @@ const wamp = new Thruway.Client('ws://127.0.0.1:9200/ws', 'noname.daemon');
         throw "no user found with username:" +username;
     }
 
-    wamp.register('noname.backend.authenticate', authenticateFromDb).subscribe(
+    wamp.register('noname.backend.authenticate', NonameAPIs.authenticateFromDb).subscribe(
         function (reg) {
            console.log("procedure noname.backend.authenticate registered");
         },

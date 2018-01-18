@@ -9,6 +9,7 @@ import * as Auth from '../actions/auth';
   template: `
     <bc-login-form
       (submitted)="onSubmit($event)"
+      (anonymousLogin)="onAnonymousLogin($event)"
       [pending]="pending$ | async"
       [errorMessage]="error$ | async">
     </bc-login-form>
@@ -26,5 +27,11 @@ export class LoginPageComponent implements OnInit {
 
   onSubmit($event: Authenticate) {
     this.store.dispatch(new Auth.Login($event));
+  }
+
+  onAnonymousLogin($event:any)
+  {
+    console.log("onAnonymousLogin");
+    this.store.dispatch(new Auth.LoginAnonymously($event));
   }
 }

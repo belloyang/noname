@@ -23,7 +23,16 @@ export class AuthEffects {
         .map(user => new Auth.LoginSuccess({ user }))
         .catch(error => of(new Auth.LoginFailure(error)))
     );
-
+  @Effect()
+  loginAnonymously$ = this.actions$
+    .ofType(Auth.ANONYMOUS_LOGIN)
+    .map((action: Auth.LoginAnonymously) => action.payload)
+    .exhaustMap(auth =>
+      this.authService
+        .loginAnonymously()
+        .map(user => new Auth.LoginSuccess({ user }))
+        .catch(error => of(new Auth.LoginFailure(error)))
+    );
   @Effect({ dispatch: false })
   loginSuccess$ = this.actions$
     .ofType(Auth.LOGIN_SUCCESS)

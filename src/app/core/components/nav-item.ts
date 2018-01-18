@@ -5,8 +5,8 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
   template: `
     <a mat-list-item [routerLink]="routerLink" (click)="activate.emit()">
       <mat-icon mat-list-icon>{{ icon }}</mat-icon>
-      <span mat-line><ng-content></ng-content></span>
-      <span mat-line class="secondary">{{ hint }}</span>
+      <span matLine><ng-content></ng-content></span>
+      <span matLine class="secondary">{{ hint }}</span>
     </a>
   `,
   styles: [
