@@ -12,6 +12,7 @@ import * as Auth from '../actions/auth';
       [pending]="pending$ | async"
       [errorMessage]="error$ | async">
     </bc-login-form>
+    
   `,
   styles: [],
 })

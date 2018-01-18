@@ -15,7 +15,8 @@ import { reducers } from './reducers';
 
 import { WampTicketService } from './services/wamp-ticket.service';
 import { WampAnonymousService } from './services/wamp-anonymous.service';
-
+import { RegisterFormComponent } from './components/register-form.component';
+// import {MatCardModule} from '@angular/material/card';
 export const COMPONENTS = [LoginPageComponent, LoginFormComponent];
 
 @NgModule({
@@ -40,9 +41,15 @@ export class AuthModule {
 @NgModule({
   imports: [
     AuthModule,
-    RouterModule.forChild([{ path: 'login', component: LoginPageComponent }]),
+    RouterModule.forChild([
+      { path: 'login', component: LoginPageComponent },
+      {
+        path: 'register', component:RegisterFormComponent
+      }
+    ]),
     StoreModule.forFeature('auth', reducers),
     EffectsModule.forFeature([AuthEffects]),
   ],
+  declarations: [RegisterFormComponent],
 })
 export class RootAuthModule {}
