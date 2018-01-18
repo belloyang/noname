@@ -20,8 +20,8 @@ import {Router} from '@angular/router'
       margin: 72px 0;
     }
 
-    md-card-title,
-    md-card-content {
+    mat-card-title,
+    mat-card-content {
       display: flex;
       justify-content: center;
     }

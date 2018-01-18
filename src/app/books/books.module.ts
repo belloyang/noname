@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MaterialModule } from '@angular/material';
+import { MatCardModule } from '@angular/material';
 import { RouterModule } from '@angular/router';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
@@ -20,7 +20,7 @@ import { reducers } from './reducers';
 @NgModule({
   imports: [
     CommonModule,
-    MaterialModule,
+    MatCardModule,
     ComponentsModule,
     RouterModule.forChild([
       { path: 'find', component: FindBookPageComponent },

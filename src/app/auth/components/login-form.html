@@ -1,19 +1,19 @@
-<md-card>
-    <md-card-title>Login</md-card-title>
-    <md-card-content>
+<mat-card>
+    <mat-card-title>Login</mat-card-title>
+    <mat-card-content>
         <div layout="column" layout-align="center center">
             <div>
                 <form [formGroup]="form" (ngSubmit)="submit()">
                     <p>
-                    <md-input-container>
+                    <mat-input-container>
                         <input type="text" mdInput placeholder="Username" formControlName="username">
-                    </md-input-container>
+                    </mat-input-container>
                     </p>
 
                     <p>
-                    <md-input-container>
+                    <mat-input-container>
                         <input type="password" mdInput placeholder="Password" formControlName="password">
-                    </md-input-container>
+                    </mat-input-container>
                     </p>
 
                     <p *ngIf="errorMessage" class="loginError">
@@ -21,12 +21,12 @@
                     </p>          
                 
                     <p class="loginButtons">
-                    <button type="submit" md-button>Login</button> 
+                    <button type="submit" mat-button>Login</button> 
                     </p>
                 </form>
             </div>
         <div><button (click)="gotoRegister()" >Register</button></div>
        
         </div>
-    </md-card-content>
-  </md-card>
+    </mat-card-content>
+  </mat-card>
