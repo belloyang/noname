@@ -10,7 +10,7 @@ import { EffectsModule } from '@ngrx/effects';
 import { DBModule } from '@ngrx/db';
 import { StoreRouterConnectingModule } from '@ngrx/router-store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
-import { MatCardModule } from '@angular/material';
+
 
 import { CoreModule } from './core/core.module';
 import { AuthModule } from './auth/auth.module';
@@ -21,6 +21,14 @@ import { schema } from './db';
 
 import { AppComponent } from './core/containers/app';
 import { environment } from '../environments/environment';
+import { 
+  MatCardModule,
+  MatInputModule,
+  MatSidenavModule,
+  MatListModule,
+  MatToolbarModule,
+  MatIconModule 
+} from '@angular/material';
 
 @NgModule({
   imports: [
@@ -28,6 +36,12 @@ import { environment } from '../environments/environment';
     BrowserModule,
     BrowserAnimationsModule,
     HttpModule,
+    MatCardModule,
+    MatInputModule,
+    MatSidenavModule,
+    MatListModule,
+    MatToolbarModule,
+    MatIconModule,
     RouterModule.forRoot(routes, { useHash: true }),
 
     /**

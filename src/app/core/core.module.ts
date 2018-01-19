@@ -28,7 +28,9 @@ export const COMPONENTS = [
 ];
 
 @NgModule({
-  imports: [CommonModule, RouterModule, MatCardModule,MatSidenavModule,
+  imports: [CommonModule, RouterModule, 
+    MatCardModule,
+    MatSidenavModule,
     MatListModule,
     MatToolbarModule,
     MatIconModule

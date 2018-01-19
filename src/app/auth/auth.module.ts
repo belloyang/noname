@@ -2,7 +2,11 @@ import { NgModule, ModuleWithProviders } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { ReactiveFormsModule } from '@angular/forms';
-import { MatCardModule } from '@angular/material';
+import { 
+  MatCardModule,
+  MatInputModule,
+  MatCardTitle,
+} from '@angular/material';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { LoginPageComponent } from './containers/login-page.component';
@@ -16,11 +20,16 @@ import { reducers } from './reducers';
 import { WampTicketService } from './services/wamp-ticket.service';
 import { WampAnonymousService } from './services/wamp-anonymous.service';
 import { RegisterFormComponent } from './components/register-form.component';
-// import {MatCardModule} from '@angular/material/card';
-export const COMPONENTS = [LoginPageComponent, LoginFormComponent];
+import { FormsModule } from '@angular/forms';
+export const COMPONENTS = [LoginPageComponent, LoginFormComponent,RegisterFormComponent];
 
 @NgModule({
-  imports: [CommonModule, ReactiveFormsModule, MatCardModule],
+  imports: [
+    CommonModule, 
+    ReactiveFormsModule,
+    FormsModule,
+     MatCardModule,
+     MatInputModule],
   declarations: COMPONENTS,
   exports: COMPONENTS,
 })
@@ -50,6 +59,6 @@ export class AuthModule {
     StoreModule.forFeature('auth', reducers),
     EffectsModule.forFeature([AuthEffects]),
   ],
-  declarations: [RegisterFormComponent],
+  declarations: [],
 })
 export class RootAuthModule {}

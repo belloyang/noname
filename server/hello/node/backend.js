@@ -70,20 +70,26 @@ MongoClient.connect(url, function(err, db) {
 const wamp = new Thruway.Client('ws://127.0.0.1:9200/ws', 'noname.daemon');
 
    NonameAPIs.createUser = function(username, password){
-        console.log("createUser called");
+        console.log("createUser called", username, password);
         var url = "mongodb://localhost:27017";
-        MongoClient.connect(url, function(err, db) {
-            if (err) throw err;
-            var dbo = db.db("mydb");
-            var userInfo = { name: username, password: password };
-            dbo.collection("users").insertOne(userInfo, function(err, res) {
-            if (err) throw err;
-            console.log("User password info added",username);
-            db.close();
-            });
-        });
+        var promise =  new Promise(
+            function(resolve, reject){
+                MongoClient.connect(url, function(err, db) {
+                    if (err) 
+                    {
+                        return reject(err);
+                    }
+                    var dbo = db.db("mydb");
+                    var userInfo = { name: username, password: password };
+                    let ret = dbo.collection("users").insertOne(userInfo) 
+                    return resolve(ret);
+                    
+                });
+            }
+        );
+        return Rx.Observable.fromPromise(promise);
 
-    }
+    };
 
     wamp.register('noname.backend.create_user',NonameAPIs.createUser).subscribe(
         function (reg) {
@@ -119,27 +125,9 @@ const wamp = new Thruway.Client('ws://127.0.0.1:9200/ws', 'noname.daemon');
             });
             console.log("promise:",promise);
             //let result = await promise;
-            let result = {name:"test"};
-            console.log("result:",result);
+            
             return Rx.Observable.fromPromise(promise);
         };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
         var lookup = 'sarah';
