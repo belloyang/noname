@@ -29,9 +29,8 @@ export class LoginPageComponent implements OnInit {
     this.store.dispatch(new Auth.Login($event));
   }
 
-  onAnonymousLogin($event:any)
-  {
-    console.log("onAnonymousLogin");
+  onAnonymousLogin($event: any) {
+    console.log('onAnonymousLogin');
     this.store.dispatch(new Auth.LoginAnonymously($event));
   }
 }

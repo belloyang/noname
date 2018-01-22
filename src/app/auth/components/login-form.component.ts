@@ -8,10 +8,10 @@ import {
 } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
 import { Authenticate } from '../models/user';
-import {Router} from '@angular/router'
+import { Router } from '@angular/router';
 @Component({
   selector: 'bc-login-form',
-  templateUrl: "./login-form.html",
+  templateUrl: './login-form.html',
   styles: [
     `
     :host {
@@ -65,7 +65,7 @@ export class LoginFormComponent implements OnInit {
     password: new FormControl(''),
   });
 
-  constructor(private router:Router) {}
+  constructor(private router: Router) {}
 
   ngOnInit() {}
 
@@ -75,12 +75,12 @@ export class LoginFormComponent implements OnInit {
     }
   }
 
-  loginAnonymously(){
+  loginAnonymously() {
     this.anonymousLogin.emit();
   }
 
-  gotoRegister(){
-    console.log("gotoRegister");
+  gotoRegister() {
+    console.log('gotoRegister');
     this.router.navigate(['/register']);
   }
 }

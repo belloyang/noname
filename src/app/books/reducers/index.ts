@@ -21,7 +21,7 @@ export interface BooksState {
 }
 
 export interface State extends fromRoot.State {
-  'books': BooksState;
+  books: BooksState;
 }
 
 export const reducers = {
@@ -49,7 +49,7 @@ export const reducers = {
 /**
  * The createFeatureSelector function selects a piece of state from the root of the state object.
  * This is used for selecting feature states that are loaded eagerly or lazily.
-*/
+ */
 export const getBooksState = createFeatureSelector<BooksState>('books');
 
 /**
@@ -58,7 +58,7 @@ export const getBooksState = createFeatureSelector<BooksState>('books');
  * need to make new selectors that wrap them.
  *
  * The createSelector function creates very efficient selectors that are memoized and
- * only recompute when arguments change. The created selectors can also be composed 
+ * only recompute when arguments change. The created selectors can also be composed
  * together to select different pieces of state.
  */
 export const getBookEntitiesState = createSelector(

@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { 
+import {
   MatCardModule,
   MatSidenavModule,
   MatListModule,
   MatToolbarModule,
-  MatIconModule 
+  MatIconModule,
 } from '@angular/material';
 import { RouterModule } from '@angular/router';
 
@@ -28,12 +28,14 @@ export const COMPONENTS = [
 ];
 
 @NgModule({
-  imports: [CommonModule, RouterModule, 
+  imports: [
+    CommonModule,
+    RouterModule,
     MatCardModule,
     MatSidenavModule,
     MatListModule,
     MatToolbarModule,
-    MatIconModule
+    MatIconModule,
   ],
   declarations: COMPONENTS,
   exports: COMPONENTS,

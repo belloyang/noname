@@ -11,11 +11,10 @@ import { Observable } from 'rxjs/Observable';
 export class AuthService {
   constructor(private wamp: WampTicketService) {}
 
-  loginAnonymously(){
-    return Observable.of({name: 'Anonymous'});
+  loginAnonymously() {
+    return Observable.of({ name: 'Anonymous' });
   }
   login({ username, password }: Authenticate) {
-    
     let authInfo = { username, password };
     console.log('login:', authInfo);
     return this.wamp
@@ -23,9 +22,8 @@ export class AuthService {
       .map(
         (ret: ResultMessage) => {
           console.log('noname.backend.authenticate returns:', ret.args[0]);
-          
+
           return { name: username };
-          
         },
         (err: any) => {
           console.log('noname.backend.authenticate failed', err);

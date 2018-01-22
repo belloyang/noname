@@ -35,8 +35,8 @@ export interface LiftedState {
 }
 
 /**
-* Computes the next entry in the log by applying an action.
-*/
+ * Computes the next entry in the log by applying an action.
+ */
 function computeNextEntry(
   reducer: ActionReducer<any, any>,
   action: Action,
@@ -66,8 +66,8 @@ function computeNextEntry(
 }
 
 /**
-* Runs the reducer on invalidated actions to get a fresh computation log.
-*/
+ * Runs the reducer on invalidated actions to get a fresh computation log.
+ */
 function recomputeStates(
   computedStates: { state: any; error: any }[],
   minInvalidatedStateIndex: number,
@@ -123,8 +123,8 @@ export function liftInitialState(
 }
 
 /**
-* Creates a history state reducer from an app's reducer.
-*/
+ * Creates a history state reducer from an app's reducer.
+ */
 export function liftReducerWith(
   initialCommittedState: any,
   initialLiftedState: LiftedState,
@@ -132,8 +132,8 @@ export function liftReducerWith(
   options: { maxAge?: number } = {}
 ) {
   /**
-  * Manages how the history actions modify the history state.
-  */
+   * Manages how the history actions modify the history state.
+   */
   return (
     reducer: ActionReducer<any, any>
   ): ActionReducer<LiftedState, Actions> => (liftedState, liftedAction) => {
