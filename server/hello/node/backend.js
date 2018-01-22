@@ -37,7 +37,11 @@ var NonameAPIs = {
     findUserInfo:null,
     createUser:null,
     authenticate:null,
-    authenticateFromDb:null
+    authenticateFromDb:null,
+
+    createChecList:null,
+    getAllLists:null
+
 }
 
 const userDB = require("./user-login-info.js");
@@ -58,17 +62,52 @@ MongoClient.connect(url, function(err, db) {
     if (err) throw err;
 
     console.log("Collection users created!");
-    db.close();
+    // db.close();
+  });
+
+  dbo.createCollection("checLists", function(err, res) {
+    if (err) throw err;
+
+    console.log("Collection checLists created!");
+    // db.close();
   });
 
 });
 
 
-
+//  checList：{
+//     name:string,
+//     createdAt:Date,
+//     alarm:any,
+//     catetory:Category,
+//     items:Aaray<CheckItem>
+// };
+ 
  
 
 const wamp = new Thruway.Client('ws://127.0.0.1:9200/ws', 'noname.daemon');
 
+NonameAPIs.createChecList = function(name, category,items){
+        console.log("createChecList called", name, category,items);
+        var url = "mongodb://localhost:27017";
+        var promise =  new Promise(
+            function(resolve, reject){
+                MongoClient.connect(url, function(err, db) {
+                    if (err) 
+                    {
+                        return reject(err);
+                    }
+                    var dbo = db.db("mydb");
+                    var checList = { name:name, category:category, items:items };
+                    let ret = dbo.collection("checLists").insertOne(checList) 
+                    return resolve(ret);
+                    
+                });
+            }
+        );
+        return Rx.Observable.fromPromise(promise);
+
+    };
    NonameAPIs.createUser = function(username, password){
         console.log("createUser called", username, password);
         var url = "mongodb://localhost:27017";
@@ -91,6 +130,15 @@ const wamp = new Thruway.Client('ws://127.0.0.1:9200/ws', 'noname.daemon');
 
     };
 
+    wamp.register('noname.backend.create_checList',NonameAPIs.createChecList).subscribe(
+        function (reg) {
+            console.log("procedure noname.backend.create_checList registered");
+         },
+         function (err) {
+            console.log("failed to register procedure: noname.backend.create_checList" , err);
+         }
+    )
+
     wamp.register('noname.backend.create_user',NonameAPIs.createUser).subscribe(
         function (reg) {
             console.log("procedure noname.backend.create_user registered");
@@ -101,6 +149,41 @@ const wamp = new Thruway.Client('ws://127.0.0.1:9200/ws', 'noname.daemon');
     )
     
  
+    NonameAPIs.getAllLists = function(){
+        var ret;
+        console.log("getAllLists:");
+        var promise =  new Promise(
+            function(resolve, reject){
+                MongoClient.connect(url,function(err,db){
+                    if(err){
+                        return reject(err);
+                    }
+                    else {
+                        var dbo = db.db("mydb");
+                        console.log("resolve");
+                        
+                        
+                        ret =  dbo.collection("checLists").find({}).toArray();
+                        resolve(ret);
+                           
+                    }
+                       
+                })
+            });
+            console.log("promise:",promise);
+            //let result = await promise;
+            
+            return Rx.Observable.fromPromise(promise);
+    }
+
+    wamp.register('noname.backend.get_all_lists',NonameAPIs.getAllLists).subscribe(
+        function (reg) {
+            console.log("procedure noname.backend.get_all_lists registered");
+         },
+         function (err) {
+            console.log("failed to register procedure: noname.backend.get_all_lists" , err);
+         }
+    )
 
     NonameAPIs.findUserInfo = function (username){
         var ret;
