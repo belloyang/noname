@@ -4,6 +4,9 @@ import { WampTicketService } from '../auth/services/wamp-ticket.service';
 import { EventMessage } from 'thruway.js/src/Messages/EventMessage';
 import { ResultMessage } from 'thruway.js/src/Messages/ResultMessage';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { BackendService } from '../services/backend.service';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { CreateListComponent } from './create-list.component';
 @Component({
   selector: 'bc-dashboard',
   templateUrl: './dashboard.html',
@@ -11,7 +14,11 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 })
 export class DashboardComponent implements OnInit {
   checLists$: BehaviorSubject<Array<any>>;
-  constructor(private wamp: WampTicketService) {
+  constructor(
+    private wamp: WampTicketService,
+    private backend: BackendService,
+    private dialog: MatDialog
+  ) {
     this.checLists$ = new BehaviorSubject<Array<any>>([]);
   }
 
@@ -19,43 +26,36 @@ export class DashboardComponent implements OnInit {
     console.log('DashboardComponent onInit');
 
     this.loadLists();
+  }
+  openDialog(): void {
+    let dialogRef = this.dialog.open(CreateListComponent, {
+      width: '250px',
+      data: {},
+    });
 
-    this.wamp
-      .call('noname.backend.get_user_pwd', ['sarah'])
-      .map((r: ResultMessage) => {
-        console.log('noname.backend.get_user_pwd:', r);
-        return r.args[0];
-      })
-      .subscribe(r => console.log('noname.backend.get_user_pwd:', r));
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed', result);
+    });
   }
 
   loadLists() {
     console.log('loadLists..');
-    this.wamp
-      .call('noname.backend.get_all_lists', [])
-      .map((r: ResultMessage) => {
-        return r.args[0];
-      })
-      .subscribe(
-        r => {
-          console.log('noname.backend.get_all_lists:', r);
-          this.checLists$.next(r);
-        },
-        err => {
-          console.error('noname.backend.get_all_lists failed:', err);
-        }
-      );
+    this.backend.getAllLists().subscribe(
+      r => {
+        console.log('noname.backend.get_all_lists:', r);
+        this.checLists$.next(r);
+      },
+      err => {
+        console.error('noname.backend.get_all_lists failed:', err);
+      }
+    );
   }
 
   createChecList() {
     console.log('create a check list');
 
-    this.wamp
-      .call('noname.backend.create_checList', ['checList-0', 'travel', []])
-      .map((r: ResultMessage) => {
-        console.log('noname.backend.create_checList:', r);
-        return r.args[0];
-      })
+    this.backend
+      .createChecList('test', 'grocery', [])
       .subscribe(r => console.log('noname.backend.create_checList:', r));
   }
 }

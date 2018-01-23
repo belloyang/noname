@@ -1,13 +1,17 @@
 import { NgModule } from '@angular/core';
 import {
-   MatCardModule,
-   MatGridListModule,
-  MatIconModule 
+  MatCardModule,
+  MatGridListModule,
+  MatIconModule,
+  MatDialogModule,
 } from '@angular/material';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 
 import { DashboardComponent } from './dashboard.component';
+import { CreateListComponent } from './create-list.component';
+
+import { BackendService } from '../services/backend.service';
 
 @NgModule({
   imports: [
@@ -15,8 +19,11 @@ import { DashboardComponent } from './dashboard.component';
     MatCardModule,
     MatGridListModule,
     MatIconModule,
+    MatDialogModule,
     RouterModule.forChild([{ path: '', component: DashboardComponent }]),
   ],
-  declarations: [DashboardComponent],
+  providers: [BackendService],
+  entryComponents: [CreateListComponent],
+  declarations: [DashboardComponent, CreateListComponent],
 })
 export class DashboardModule {}

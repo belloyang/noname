@@ -2,12 +2,30 @@
     <mat-grid-tile 
     *ngFor="let list of checLists$|async"
     >
-    <p>{{list.name}}</p>
-    <p>{{list.category}}</p>
+    <mat-card>
+      <mat-card-title>
+        {{list.name}}
+      </mat-card-title>
+      <mat-card-header>
+        {{list.category}}
+      </mat-card-header>
+      <mat-card-content>
+
+      </mat-card-content>
+    </mat-card>
+    
+    
 
     </mat-grid-tile>
 
-    <mat-grid-tile><button mat-button (click)="createChecList()"><mat-icon mat-list-icon>add</mat-icon></button></mat-grid-tile>
+    <mat-grid-tile>
+      <mat-card>
+        <mat-card-content>
+          <button mat-raised-button (click)="openDialog()" ><mat-icon mat-list-icon>add</mat-icon></button>
+        </mat-card-content>
+      </mat-card>
+      
+    </mat-grid-tile>
     
     
   </mat-grid-list> 
