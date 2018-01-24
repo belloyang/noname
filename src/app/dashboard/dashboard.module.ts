@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import {
   MatCardModule,
   MatGridListModule,
@@ -16,6 +17,7 @@ import { BackendService } from '../services/backend.service';
 @NgModule({
   imports: [
     CommonModule,
+    FormsModule,
     MatCardModule,
     MatGridListModule,
     MatIconModule,

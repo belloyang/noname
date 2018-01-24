@@ -1,0 +1,19 @@
+<mat-card>
+    <mat-card-title>
+        Creating a ChecList
+    </mat-card-title>
+    <mat-card-content>
+        <p>title:<input type="text" [(ngModel)]="title" placeholder="set a title"/></p>
+        <p>category:
+            <select [(ngModel)]="category">
+                <option [value]='travel'>Travel</option>
+                <option [value]='grocery'>Grocery</option>
+                <option [value]='other'>Other</option>
+            </select>
+        </p>
+    </mat-card-content>
+    <mat-card-actions>
+        <button (click)="createChecList()" mat-button>Save</button>
+        <button (click)="closeModal()" mat-button>Cancel</button>
+    </mat-card-actions>
+</mat-card>

@@ -50,12 +50,4 @@ export class DashboardComponent implements OnInit {
       }
     );
   }
-
-  createChecList() {
-    console.log('create a check list');
-
-    this.backend
-      .createChecList('test', 'grocery', [])
-      .subscribe(r => console.log('noname.backend.create_checList:', r));
-  }
 }
