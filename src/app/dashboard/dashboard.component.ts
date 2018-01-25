@@ -7,6 +7,7 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { BackendService } from '../services/backend.service';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { CreateListComponent } from './create-list.component';
+import {Router} from '@angular/router'
 @Component({
   selector: 'bc-dashboard',
   templateUrl: './dashboard.html',
@@ -17,7 +18,8 @@ export class DashboardComponent implements OnInit {
   constructor(
     private wamp: WampTicketService,
     private backend: BackendService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private router:Router
   ) {
     this.checLists$ = new BehaviorSubject<Array<any>>([]);
   }
@@ -35,6 +37,7 @@ export class DashboardComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed', result);
+      this.loadLists();
     });
   }
 
@@ -49,5 +52,10 @@ export class DashboardComponent implements OnInit {
         console.error('noname.backend.get_all_lists failed:', err);
       }
     );
+  }
+
+  gotoListDetail(listId:any){
+    console.log("gotoListDetail:",listId);
+    this.router.navigate(['/dashboard/list',listId]);
   }
 }

@@ -2,6 +2,7 @@
     <mat-card-title>
         Creating a ChecList
     </mat-card-title>
+    <mat-card-header>Author:{{getLoginUser()|async}}</mat-card-header>
     <mat-card-content>
         <p>title:<input type="text" [(ngModel)]="title" placeholder="set a title"/></p>
         <p>category:
@@ -13,7 +14,7 @@
         </p>
     </mat-card-content>
     <mat-card-actions>
-        <button (click)="createChecList()" mat-button>Save</button>
+        <button (click)="createEmptyChecList()" mat-button>Save</button>
         <button (click)="closeModal()" mat-button>Cancel</button>
     </mat-card-actions>
 </mat-card>

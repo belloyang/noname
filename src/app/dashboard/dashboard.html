@@ -2,10 +2,11 @@
     <mat-grid-tile 
     *ngFor="let list of checLists$|async"
     >
-    <mat-card>
+    <mat-card (click)="gotoListDetail(list._id)">
       <mat-card-title>
-        {{list.name}}
+        {{list.title}}
       </mat-card-title>
+      
       <mat-card-header>
         {{list.category}}
       </mat-card-header>

@@ -40,6 +40,7 @@ var NonameAPIs = {
     authenticateFromDb:null,
 
     createChecList:null,
+    createEmptyChecList:null,
     getAllLists:null
 
 }
@@ -129,8 +130,41 @@ NonameAPIs.createChecList = function(name, category,items){
         return Rx.Observable.fromPromise(promise);
 
     };
+    
 
     wamp.register('noname.backend.create_checList',NonameAPIs.createChecList).subscribe(
+        function (reg) {
+            console.log("procedure noname.backend.create_checList registered");
+         },
+         function (err) {
+            console.log("failed to register procedure: noname.backend.create_checList" , err);
+         }
+    )
+
+
+    NonameAPIs.createEmptyChecList = function(title, category,when,author){
+        console.log("createChecList called", title, category,when, author);
+        var url = "mongodb://localhost:27017";
+        var promise =  new Promise(
+            function(resolve, reject){
+                MongoClient.connect(url, function(err, db) {
+                    if (err) 
+                    {
+                        return reject(err);
+                    }
+                    var dbo = db.db("mydb");
+                    var checList = { title:title, category:category, when: when, author:author, items:[] };
+                    let ret = dbo.collection("checLists").insertOne(checList) 
+                    return resolve(ret);
+                    
+                });
+            }
+        );
+        return Rx.Observable.fromPromise(promise);
+
+    };
+
+    wamp.register('noname.backend.create_empty_checList',NonameAPIs.createEmptyChecList).subscribe(
         function (reg) {
             console.log("procedure noname.backend.create_checList registered");
          },

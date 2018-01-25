@@ -30,4 +30,12 @@ export class BackendService {
         return r.args[0];
       });
   }
+
+  createEmptyChecList(title: string, category: string, when:Date, author:string) {
+    return this.wamp
+      .call('noname.backend.create_empty_checList', [title, category, when, author])
+      .map((r: ResultMessage) => {
+        return r.args[0];
+      });
+  }
 }
