@@ -41,8 +41,8 @@ var NonameAPIs = {
 
     createChecList:null,
     createEmptyChecList:null,
-    getAllLists:null
-
+    getAllLists:null,
+    getListDetail:null
 }
 
 const userDB = require("./user-login-info.js");
@@ -141,6 +141,45 @@ NonameAPIs.createChecList = function(name, category,items){
          }
     )
 
+    var ObjectID=require("mongodb").ObjectId;
+
+    NonameAPIs.getListDetail = function(id){
+        var ret;
+        console.log("getListDetail:"+id);
+        var promise =  new Promise(
+            function(resolve, reject){
+                MongoClient.connect(url,function(err,db){
+                    if(err){
+                        return reject(err);
+                    }
+                    else {
+                        var dbo = db.db("mydb");
+                        console.log("resolve");
+                        
+                       
+                        
+                        ret =  dbo.collection("checLists").findOne({_id:ObjectID(id)});
+                        resolve(ret);
+                           
+                    }
+                       
+                })
+            });
+            console.log("promise:",promise);
+            //let result = await promise;
+            
+            return Rx.Observable.fromPromise(promise);
+        };
+    
+
+    wamp.register('noname.backend.get_list_detail',NonameAPIs.getListDetail).subscribe(
+        function (reg) {
+            console.log("procedure noname.backend.get_list_detail registered");
+         },
+         function (err) {
+            console.log("failed to register procedure: noname.backend.get_list_detail" , err);
+         }
+    )
 
     NonameAPIs.createEmptyChecList = function(title, category,when,author){
         console.log("createChecList called", title, category,when, author);

@@ -38,4 +38,11 @@ export class BackendService {
         return r.args[0];
       });
   }
+
+  getListDetail(id:any){
+    return this.wamp.call('noname.backend.get_list_detail',[id])
+    .map((r: ResultMessage) => {
+      return r.args[0];
+    });
+  }
 }
