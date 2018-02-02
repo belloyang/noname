@@ -12,4 +12,13 @@ export {
   RouterCancelPayload,
   RouterNavigationPayload,
   StoreRouterConnectingModule,
+  StoreRouterConfig,
+  StoreRouterConfigFunction,
+  ROUTER_CONFIG,
+  DEFAULT_ROUTER_FEATURENAME,
 } from './router_store_module';
+
+export {
+  RouterStateSerializer,
+  DefaultRouterStateSerializer,
+} from './serializer';

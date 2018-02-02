@@ -1,20 +1,27 @@
-import { NgModule, Inject } from '@angular/core';
+import { NgModule, Inject, Optional } from '@angular/core';
+import { StoreModule, Store } from '@ngrx/store';
 import { EffectsRunner } from './effects_runner';
 import { EffectSources } from './effect_sources';
 import { ROOT_EFFECTS } from './tokens';
+
+export const ROOT_EFFECTS_INIT = '@ngrx/effects/init';
 
 @NgModule({})
 export class EffectsRootModule {
   constructor(
     private sources: EffectSources,
     runner: EffectsRunner,
-    @Inject(ROOT_EFFECTS) rootEffects: any[]
+    store: Store<any>,
+    @Inject(ROOT_EFFECTS) rootEffects: any[],
+    @Optional() storeModule: StoreModule
   ) {
     runner.start();
 
     rootEffects.forEach(effectSourceInstance =>
       sources.addEffects(effectSourceInstance)
     );
+
+    store.dispatch({ type: ROOT_EFFECTS_INIT });
   }
 
   addEffects(effectSourceInstance: any) {

@@ -3,7 +3,7 @@ import { ignoreElements } from 'rxjs/operator/ignoreElements';
 import { Observable } from 'rxjs/Observable';
 import { compose } from '@ngrx/store';
 
-const METADATA_KEY = '@ngrx/effects';
+const METADATA_KEY = '__@ngrx/effects__';
 const r: any = Reflect;
 
 export interface EffectMetadata {
@@ -12,23 +12,23 @@ export interface EffectMetadata {
 }
 
 function getEffectMetadataEntries(sourceProto: any): EffectMetadata[] {
-  if (r.hasOwnMetadata(METADATA_KEY, sourceProto)) {
-    return r.getOwnMetadata(METADATA_KEY, sourceProto);
-  }
-
-  return [];
+  return sourceProto.constructor[METADATA_KEY] || [];
 }
 
 function setEffectMetadataEntries(sourceProto: any, entries: EffectMetadata[]) {
-  r.defineMetadata(METADATA_KEY, entries, sourceProto);
+  const constructor = sourceProto.constructor;
+  const meta: EffectMetadata[] = constructor.hasOwnProperty(METADATA_KEY)
+    ? (constructor as any)[METADATA_KEY]
+    : Object.defineProperty(constructor, METADATA_KEY, { value: [] })[
+        METADATA_KEY
+      ];
+  Array.prototype.push.apply(meta, entries);
 }
 
 export function Effect({ dispatch } = { dispatch: true }): PropertyDecorator {
   return function(target: any, propertyName: string) {
-    const effects: EffectMetadata[] = getEffectMetadataEntries(target);
     const metadata: EffectMetadata = { propertyName, dispatch };
-
-    setEffectMetadataEntries(target, [...effects, metadata]);
+    setEffectMetadataEntries(target, [metadata]);
   };
 }
 
@@ -40,3 +40,21 @@ export const getSourceMetadata = compose(
   getEffectMetadataEntries,
   getSourceForInstance
 );
+
+export type EffectsMetadata<T> = {
+  [key in keyof T]?:
+    | undefined
+    | {
+        dispatch: boolean;
+      }
+};
+
+export function getEffectsMetadata<T>(instance: T): EffectsMetadata<T> {
+  const metadata: EffectsMetadata<T> = {};
+
+  getSourceMetadata(instance).forEach(({ propertyName, dispatch }) => {
+    metadata[propertyName] = { dispatch };
+  });
+
+  return metadata;
+}

@@ -32,7 +32,7 @@ describe('ngRx Store', () => {
       expect(store).toBeDefined();
     });
 
-    it('should handle re-entrancy', done => {
+    it('should handle re-entrancy', (done: any) => {
       let todosNextCount = 0;
       let todosCountNextCount = 0;
 
@@ -45,7 +45,7 @@ describe('ngRx Store', () => {
         todosCountNextCount++;
       });
 
-      store.dispatch({ type: 'ADD_TODO', payload: { name: 'test' } });
+      store.dispatch({ type: 'ADD_TODO', payload: { name: 'joe' } });
       expect(todosNextCount).toBe(2);
       expect(todosCountNextCount).toBe(2);
 

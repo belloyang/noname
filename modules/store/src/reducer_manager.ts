@@ -16,7 +16,7 @@ export abstract class ReducerObservable extends Observable<
   ActionReducer<any, any>
 > {}
 export abstract class ReducerManagerDispatcher extends ActionsSubject {}
-export const UPDATE = '@ngrx/store/update-reducers';
+export const UPDATE = '@ngrx/store/update-reducers' as '@ngrx/store/update-reducers';
 
 @Injectable()
 export class ReducerManager extends BehaviorSubject<ActionReducer<any, any>>
@@ -40,7 +40,7 @@ export class ReducerManager extends BehaviorSubject<ActionReducer<any, any>>
   }: StoreFeature<any, any>) {
     const reducer =
       typeof reducers === 'function'
-        ? reducers
+        ? (state: any, action: any) => reducers(state || initialState, action)
         : createReducerFactory(reducerFactory, metaReducers)(
             reducers,
             initialState

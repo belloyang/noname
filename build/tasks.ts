@@ -27,7 +27,20 @@ export async function compilePackagesWithNgc(config: Config) {
 async function _compilePackagesWithNgc(pkg: string) {
   await util.exec('ngc', [`-p ./modules/${pkg}/tsconfig-build.json`]);
 
-  const entryTypeDefinition = `export * from './${pkg}/index';`;
+  /**
+   * Test modules are treated differently because nested inside top-level.
+   * This step removes the top-level package from testing modules from the
+   * export statement.
+   * Also changes the module name from 'index' to 'testing'
+   * i.e. export * from './effects/testing/index' becomes './testing/testing';
+   *
+   * See https://github.com/ngrx/platform/issues/94
+   */
+  let [exportPath, moduleName] = /\/testing$/.test(pkg)
+    ? [pkg.replace(/(.*\/)testing/i, 'testing'), 'testing']
+    : [pkg, 'index'];
+
+  const entryTypeDefinition = `export * from './${exportPath}/${moduleName}';`;
   const entryMetadata = `{"__symbolic":"module","version":3,"metadata":{},"exports":[{"from":"./${pkg}/index"}]}`;
 
   await Promise.all([
@@ -49,6 +62,7 @@ export async function bundleFesms(config: Config) {
     await util.exec('rollup', [
       `-i ./dist/packages/${pkg}/index.js`,
       `-o ./dist/${topLevelName}/${config.scope}/${pkg}.js`,
+      `-f es`,
       `--sourcemap`,
     ]);
 
@@ -109,6 +123,21 @@ export async function cleanTypeScriptFiles(config: Config) {
 }
 
 /**
+ * Removes any leftover Javascript files from previous compilation steps,
+ * leaving the bundles and FESM in place
+ */
+export async function cleanJavaScriptFiles(config: Config) {
+  const jsFilesGlob = './dist/packages/**/*.js';
+  const jsExcludeFilesFlob = './dist/packages/(bundles|@ngrx)/**/*.js';
+  const filesToRemove = await util.getListOfFiles(
+    jsFilesGlob,
+    jsExcludeFilesFlob
+  );
+
+  await mapAsync(filesToRemove, util.remove);
+}
+
+/**
  * Renames the index files in each package to the name
  * of the package.
  */
@@ -145,7 +174,7 @@ export async function removeRemainingSourceMapFiles(config: Config) {
 export async function copyTypeDefinitionFiles(config: Config) {
   const packages = util.getTopLevelPackages(config);
   const files = await util.getListOfFiles(
-    `./dist/packages/?(${packages.join('|')})/**/*`
+    `./dist/packages/?(${packages.join('|')})/**/*.*`
   );
 
   await mapAsync(files, async file => {
