@@ -31,18 +31,29 @@ export class BackendService {
       });
   }
 
-  createEmptyChecList(title: string, category: string, when:Date, author:string) {
+  createEmptyChecList(
+    title: string,
+    category: string,
+    when: Date,
+    author: string
+  ) {
     return this.wamp
-      .call('noname.backend.create_empty_checList', [title, category, when, author])
+      .call('noname.backend.create_empty_checList', [
+        title,
+        category,
+        when,
+        author,
+      ])
       .map((r: ResultMessage) => {
         return r.args[0];
       });
   }
 
-  getListDetail(id:any){
-    return this.wamp.call('noname.backend.get_list_detail',[id])
-    .map((r: ResultMessage) => {
-      return r.args[0];
-    });
+  getListDetail(id: any) {
+    return this.wamp
+      .call('noname.backend.get_list_detail', [id])
+      .map((r: ResultMessage) => {
+        return r.args[0];
+      });
   }
 }

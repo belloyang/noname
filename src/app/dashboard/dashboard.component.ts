@@ -7,7 +7,7 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { BackendService } from '../services/backend.service';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { CreateListComponent } from './create-list.component';
-import {Router} from '@angular/router'
+import { Router } from '@angular/router';
 @Component({
   selector: 'bc-dashboard',
   templateUrl: './dashboard.html',
@@ -19,7 +19,7 @@ export class DashboardComponent implements OnInit {
     private wamp: WampTicketService,
     private backend: BackendService,
     private dialog: MatDialog,
-    private router:Router
+    private router: Router
   ) {
     this.checLists$ = new BehaviorSubject<Array<any>>([]);
   }
@@ -54,8 +54,8 @@ export class DashboardComponent implements OnInit {
     );
   }
 
-  gotoListDetail(listId:any){
-    console.log("gotoListDetail:",listId);
-    this.router.navigate(['/dashboard/list',listId]);
+  gotoListDetail(listId: any) {
+    console.log('gotoListDetail:', listId);
+    this.router.navigate(['/dashboard/list', listId]);
   }
 }

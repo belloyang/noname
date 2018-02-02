@@ -25,7 +25,7 @@ import { ListDetailComponent } from './list-detail.component';
     MatDialogModule,
     RouterModule.forChild([
       { path: '', component: DashboardComponent },
-      { path: 'list/:id', component: ListDetailComponent}
+      { path: 'list/:id', component: ListDetailComponent },
     ]),
   ],
   providers: [BackendService],
