@@ -24,6 +24,14 @@ import { CustomRouterStateSerializer } from './shared/utils';
 
 import { AppComponent } from './core/containers/app';
 import { environment } from '../environments/environment';
+import {
+  MatCardModule,
+  MatInputModule,
+  MatSidenavModule,
+  MatListModule,
+  MatToolbarModule,
+  MatIconModule,
+} from '@angular/material';
 
 @NgModule({
   imports: [
@@ -31,6 +39,12 @@ import { environment } from '../environments/environment';
     BrowserModule,
     BrowserAnimationsModule,
     HttpClientModule,
+    MatCardModule,
+    MatInputModule,
+    MatSidenavModule,
+    MatListModule,
+    MatToolbarModule,
+    MatIconModule,
     RouterModule.forRoot(routes, { useHash: true }),
 
     /**
