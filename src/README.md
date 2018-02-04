@@ -1,7 +1,7 @@
 # @ngrx example application
 
 Example application utilizing @ngrx libraries, showcasing common patterns and best practices.
-Take a look at the [live app](https://ngrx.github.io/platform/example-app/).
+Take a look at the [live app](https://ngrx.github.io/platform/src/).
 
 This app is a book collection manager. The user can authenticate, use the Google Books API to search for
 books and add them to their collection. This application utilizes [@ngrx/db](https://github.com/ngrx/db)
@@ -26,7 +26,7 @@ Built with [@angular/cli](https://github.com/angular/angular-cli)
 # Clone the repository
 git clone https://github.com/ngrx/platform.git
 
-# Go to the example directory
+# Go to the src directory
 cd platform
 
 # Install the dependencies
@@ -36,7 +36,7 @@ yarn
 yarn run build && yarn run cli serve
 
 # Or try
-yarn run example:start
+yarn run src:start
 ```
 
 Navigate to [http://localhost:4200/](http://localhost:4200/) in your browser. To login, the username and password is `test`.

@@ -17,7 +17,7 @@ Reactive libraries for Angular
 - [@ngrx/entity](./docs/entity/README.md) - Entity State adapter for managing record collections.
 
 ## Examples
-- [example-app](./example-app/README.md) - Example application utilizing @ngrx libraries, showcasing common patterns and best practices.
+- [src](./src/README.md) - Example application utilizing @ngrx libraries, showcasing common patterns and best practices.
 
 ## Migration
 - [Migration guide](./MIGRATION.md) for users of ngrx packages prior to 4.x.

@@ -14,10 +14,10 @@
     "cli": "ng",
     "coverage:html": "nyc report --reporter=html",
     "copy:dist": "ncp dist/ ./node_modules/@ngrx/",
-    "example:start": "yarn run build && yarn run copy:dist && yarn run cli serve",
-    "example:start:aot": "yarn run build && yarn run copy:dist && yarn run cli serve --aot",
-    "example:test": "jest --watch",
-    "example:build:prod": "yarn build && yarn run copy:dist && yarn cli build -prod --base-href \"/platform/example-app/\" --output-path \"./example-dist/example-app\"",
+    "src:start": "yarn run build && yarn run copy:dist && yarn run cli serve",
+    "src:start:aot": "yarn run build && yarn run copy:dist && yarn run cli serve --aot",
+    "src:test": "jest --watch",
+    "src:build:prod": "yarn build && yarn run copy:dist && yarn cli build -prod --base-href \"/platform/src/\" --output-path \"./src-dist/src\"",
     "ci": "yarn run build && yarn run test && nyc report --reporter=text-lcov | coveralls",
     "prettier": "prettier --parser typescript --single-quote --trailing-comma es5 --write \"**/*.ts\"",
     "watch:tests": "chokidar 'modules/**/*.ts' --initial -c 'nyc --reporter=text --reporter=html yarn run test:unit'",
@@ -147,7 +147,7 @@
     "setupTestFrameworkScriptFile": "<rootDir>/setup-jest.ts",
     "globals": {
       "ts-jest": {
-        "tsConfigFile": "example-app/tsconfig.spec.json"
+        "tsConfigFile": "src/tsconfig.spec.json"
       },
       "__TRANSFORM_HTML__": true
     },
@@ -155,7 +155,7 @@
       "^.+\\.(ts|js|html)$": "<rootDir>/node_modules/jest-preset-angular/preprocessor.js"
     },
     "testMatch": [
-      "<rootDir>/example-app/**/*.spec.ts"
+      "<rootDir>/src/**/*.spec.ts"
     ],
     "moduleFileExtensions": [
       "ts",
