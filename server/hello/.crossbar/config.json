@@ -1,0 +1,153 @@
+{
+    "version": 2,
+    "controller": {},
+    "workers": [
+        {
+            "type": "router",
+            "realms": [
+                {
+                    "name": "noname.daemon",
+                    "roles": [
+                        {
+                            "name": "authenticator",
+                            "permissions": [
+                                {
+                                    "uri": "noname.authenticate",
+                                    "match": "exact",
+                                    "allow": {
+                                        "call": false,
+                                        "register": true,
+                                        "publish": false,
+                                        "subscribe": false
+                                    },
+                                    "disclose": { 
+                                        "caller": false,
+                                        "publisher": false
+                                    },
+                                    "cache": true
+                                }
+                            ]
+                        },
+                        {
+                            "name": "frontend",
+                            "permissions": [
+                                {
+                                    "uri": "",
+                                    "match": "prefix",
+                                    "allow": {
+                                        "call": true,
+                                        "register": true,
+                                        "publish": true,
+                                        "subscribe": true
+                                    },
+                                    "disclose": { 
+                                        "caller": false,
+                                        "publisher": false
+                                    },
+                                    "cache": true
+                                }
+                            ]
+                        },
+                        {
+                            "name": "anonymous",
+                            "permissions": [
+                                {
+                                    "uri": "",
+                                    "match": "prefix",
+                                    "allow": {
+                                        "call": true,
+                                        "register": true,
+                                        "publish": true,
+                                        "subscribe": true
+                                    },
+                                    "disclose": {
+                                        "caller": false,
+                                        "publisher": false
+                                    },
+                                    "cache": true
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ],
+            "transports": [
+                {
+                    "type": "web",
+                    "endpoint": {
+                        "type": "tcp",
+                        "port": 9200
+                    },
+                    "paths": {
+                        "/": {
+                            "type": "static",
+                            "directory": "../../../dist"
+                        },
+                        "ws": {
+                            "type": "websocket",
+                            "serializers": [
+                                "json"
+                            ],
+                            "auth": {
+                                    "ticket": {
+                                        "type": "dynamic",
+                                        "authenticator": "noname.authenticate"
+                                     },
+                                      "anonymous": {
+                                             "type": "static",
+                                            "role": "anonymous"
+                                    },
+                                     "wampcra": {
+                                            "type": "static",
+                                              "users": {
+                                            
+                                                    "joe": {
+                                                         "secret": "deadpool",
+                                                         "role": "frontend",
+                                                        "iterations": 1000,
+                                                          "keylen": 20
+                                                    }
+                                             }
+                                    }
+                            }
+                        } 
+                    }
+                }
+            ]
+        },
+        {
+            "type": "guest",
+            "executable": "node",
+            "arguments": [
+                "authenticator.js"
+            ],
+            "options": {
+                "workdir": "../node",
+                "watch": {
+                    "directories": [
+                        "../node"
+                    ],
+                    "action": "restart"
+                }
+            }
+        },
+        {
+            "type": "guest",
+            "executable": "node",
+            "arguments": [
+                "backend.js"
+            ],
+            "options": {
+                "workdir": "../node",
+                "watch": {
+                    "directories": [
+                        "../node"
+                    ],
+                    "action": "restart"
+                }
+            }
+        }
+        
+
+    ]
+}
