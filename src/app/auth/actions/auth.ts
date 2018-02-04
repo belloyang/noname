@@ -3,6 +3,7 @@ import { User, Authenticate } from '../models/user';
 
 export enum AuthActionTypes {
   Login = '[Auth] Login',
+  ANONYMOUS_LOGIN = '[Auth] Anonymous Login',
   Logout = '[Auth] Logout',
   LoginSuccess = '[Auth] Login Success',
   LoginFailure = '[Auth] Login Failure',
@@ -15,6 +16,11 @@ export class Login implements Action {
   constructor(public payload: Authenticate) {}
 }
 
+export class LoginAnonymously implements Action {
+  readonly type = AuthActionTypes.ANONYMOUS_LOGIN;
+
+  constructor(public payload: Authenticate) {}
+}
 export class LoginSuccess implements Action {
   readonly type = AuthActionTypes.LoginSuccess;
 
@@ -38,6 +44,7 @@ export class Logout implements Action {
 export type AuthActions =
   | Login
   | LoginSuccess
+  | LoginAnonymously
   | LoginFailure
   | LoginRedirect
   | Logout;

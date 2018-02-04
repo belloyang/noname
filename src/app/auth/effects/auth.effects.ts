@@ -7,6 +7,7 @@ import { tap, map, exhaustMap, catchError } from 'rxjs/operators';
 import { AuthService } from '../services/auth.service';
 import {
   Login,
+  LoginAnonymously,
   LoginSuccess,
   LoginFailure,
   AuthActionTypes,
@@ -22,6 +23,20 @@ export class AuthEffects {
     exhaustMap((auth: Authenticate) =>
       this.authService
         .login(auth)
+        .pipe(
+          map(user => new LoginSuccess({ user })),
+          catchError(error => of(new LoginFailure(error)))
+        )
+    )
+  );
+
+  @Effect()
+  loginAnonymously$ = this.actions$.pipe(
+    ofType(AuthActionTypes.ANONYMOUS_LOGIN),
+    map((action: LoginAnonymously) => action.payload),
+    exhaustMap((auth: Authenticate) =>
+      this.authService
+        .loginAnonymously(auth)
         .pipe(
           map(user => new LoginSuccess({ user })),
           catchError(error => of(new LoginFailure(error)))

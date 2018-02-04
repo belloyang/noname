@@ -6,6 +6,8 @@ import {
   MatIconModule,
   MatDialogModule,
 } from '@angular/material';
+
+import { MaterialModule } from '../material';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 
@@ -19,10 +21,7 @@ import { ListDetailComponent } from './list-detail.component';
   imports: [
     CommonModule,
     FormsModule,
-    MatCardModule,
-    MatGridListModule,
-    MatIconModule,
-    MatDialogModule,
+    MaterialModule,
     RouterModule.forChild([
       { path: '', component: DashboardComponent },
       { path: 'list/:id', component: ListDetailComponent },

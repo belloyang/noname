@@ -11,12 +11,19 @@ import { AuthService } from './services/auth.service';
 import { AuthGuard } from './services/auth-guard.service';
 import { AuthEffects } from './effects/auth.effects';
 import { reducers } from './reducers';
+import { WampTicketService } from './services/wamp-ticket.service';
+import { WampAnonymousService } from './services/wamp-anonymous.service';
+import { RegisterFormComponent } from './components/register-form.component';
 import { MaterialModule } from '../material';
-
-export const COMPONENTS = [LoginPageComponent, LoginFormComponent];
+import { FormsModule } from '@angular/forms';
+export const COMPONENTS = [
+  LoginPageComponent,
+  LoginFormComponent,
+  RegisterFormComponent,
+];
 
 @NgModule({
-  imports: [CommonModule, ReactiveFormsModule, MaterialModule],
+  imports: [CommonModule, ReactiveFormsModule, MaterialModule, FormsModule],
   declarations: COMPONENTS,
   exports: COMPONENTS,
 })
@@ -24,7 +31,12 @@ export class AuthModule {
   static forRoot(): ModuleWithProviders {
     return {
       ngModule: RootAuthModule,
-      providers: [AuthService, AuthGuard],
+      providers: [
+        AuthService,
+        AuthGuard,
+        WampTicketService,
+        WampAnonymousService,
+      ],
     };
   }
 }
@@ -32,9 +44,16 @@ export class AuthModule {
 @NgModule({
   imports: [
     AuthModule,
-    RouterModule.forChild([{ path: 'login', component: LoginPageComponent }]),
+    RouterModule.forChild([
+      { path: 'login', component: LoginPageComponent },
+      {
+        path: 'register',
+        component: RegisterFormComponent,
+      },
+    ]),
     StoreModule.forFeature('auth', reducers),
     EffectsModule.forFeature([AuthEffects]),
   ],
+  declarations: [],
 })
 export class RootAuthModule {}

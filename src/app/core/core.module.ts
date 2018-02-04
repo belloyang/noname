@@ -29,15 +29,7 @@ export const COMPONENTS = [
 ];
 
 @NgModule({
-  imports: [
-    CommonModule,
-    RouterModule,
-    MatCardModule,
-    MatSidenavModule,
-    MatListModule,
-    MatToolbarModule,
-    MatIconModule,
-  ],
+  imports: [CommonModule, RouterModule, MaterialModule],
   declarations: COMPONENTS,
   exports: COMPONENTS,
 })

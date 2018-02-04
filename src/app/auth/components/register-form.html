@@ -1,0 +1,41 @@
+<mat-card>
+    <mat-card-title>Register</mat-card-title>
+    <mat-card-content>
+        <div layout="column" layout-align="center center">
+            <div>
+            <p>
+                <mat-input-container>
+                <input matInput type="text" placeholder="First name" [(ngModel)]="firstname"/>
+                </mat-input-container>
+            </p>
+            <p>
+                    <mat-input-container>
+                    <input matInput type="text" placeholder="Last name" [(ngModel)]="lastname"/>
+                    </mat-input-container>
+            </p>
+            <p>
+                    <mat-input-container>
+                    <input matInput type="text" placeholder="username" [(ngModel)]="username"/>
+                    </mat-input-container>
+            </p>
+            <p>
+                    <mat-input-container>
+                        <input matInput type="password" placeholder="password" [(ngModel)]="password"/>
+                    </mat-input-container>
+            </p>
+            <p>
+                    <mat-input-container>
+                        <input matInput type="password" placeholder="password confirm" [(ngModel)]="password_confirm"/>
+                    </mat-input-container>
+            </p>
+            </div>
+        </div>
+        <p *ngIf="errorMessage" class="loginError">
+                {{ errorMessage }}
+        </p> 
+    </mat-card-content>
+    <mat-card-actions>
+        <button mat-button (click)="submit()">Submit</button>
+    </mat-card-actions>
+
+</mat-card>
