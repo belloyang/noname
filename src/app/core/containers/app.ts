@@ -30,11 +30,11 @@ import * as Auth from '../../auth/actions/auth';
         </bc-nav-item>
       </bc-sidenav>
       <bc-toolbar (openMenu)="openSidenav()">
-        Book Collection
+        Bing's ChecList
       </bc-toolbar>
-
-      <router-outlet></router-outlet>
-    </bc-layout>
+      <router-outlet ></router-outlet>
+      
+      </bc-layout>
   `,
 })
 export class AppComponent {
@@ -57,6 +57,7 @@ export class AppComponent {
      * updates and user interaction through the life of our
      * application.
      */
+    console.log('closeSidenav()');
     this.store.dispatch(new layout.CloseSidenav());
   }
 

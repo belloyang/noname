@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'bc-layout',
   template: `
-    <mat-sidenav-container fullscreen>
+    <mat-sidenav-container fullscreen (backdropClick)="close()">
 
       <ng-content></ng-content>
 
@@ -22,4 +22,8 @@ import { Component } from '@angular/core';
   `,
   ],
 })
-export class LayoutComponent {}
+export class LayoutComponent {
+  close() {
+    console.log('close called!');
+  }
+}
