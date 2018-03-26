@@ -22,12 +22,16 @@ import * as Auth from '../../auth/actions/auth';
         <bc-nav-item (navigate)="closeSidenav()" *ngIf="loggedIn$ | async" routerLink="/books/find" icon="search" hint="Find your next book!">
           Browse Books
         </bc-nav-item>
+        <bc-nav-item (navigate)="closeSidenav()" *ngIf="loggedIn$ | async" routerLink="/dashboard/about" icon="info" hint="Software build info">
+          About
+        </bc-nav-item>
         <bc-nav-item (navigate)="closeSidenav()" *ngIf="!(loggedIn$ | async)">
           Sign In
         </bc-nav-item>
         <bc-nav-item (navigate)="logout()" *ngIf="loggedIn$ | async">
           Sign Out
         </bc-nav-item>
+       
       </bc-sidenav>
       <bc-toolbar (openMenu)="openSidenav()">
         Bing's ChecList

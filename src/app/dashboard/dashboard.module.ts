@@ -16,6 +16,7 @@ import { CreateListComponent } from './create-list.component';
 
 import { BackendService } from '../services/backend.service';
 import { ListDetailComponent } from './list-detail.component';
+import { AboutComponent } from './about.component';
 
 @NgModule({
   imports: [
@@ -25,10 +26,16 @@ import { ListDetailComponent } from './list-detail.component';
     RouterModule.forChild([
       { path: '', component: DashboardComponent },
       { path: 'list/:id', component: ListDetailComponent },
+      { path: 'about', component: AboutComponent },
     ]),
   ],
   providers: [BackendService],
   entryComponents: [CreateListComponent],
-  declarations: [DashboardComponent, CreateListComponent, ListDetailComponent],
+  declarations: [
+    DashboardComponent,
+    CreateListComponent,
+    ListDetailComponent,
+    AboutComponent,
+  ],
 })
 export class DashboardModule {}
