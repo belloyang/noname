@@ -5,7 +5,6 @@
   "scripts": {
     "precommit": "lint-staged",
     "bootstrap": "lerna bootstrap",
-    "pre": "npm version $(git describe) --allow-same-version",
     "build": "ts-node ./build/index.ts",
     "postbuild": "rimraf **/dist/**/*.ngsummary.json",
     "prebuild": "ts-node git.version.ts",
