@@ -67,4 +67,5 @@ ngfactory
 output
 *.ngsummary.json
 *.ngfactory.ts
+/src/environments/versions.ts
 tmp
