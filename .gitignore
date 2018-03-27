@@ -23,6 +23,7 @@ build/Release
 
 # Users Environment Variables
 .lock-wscript
+.env
 
 # OS generated files #
 .DS_Store
@@ -67,5 +68,5 @@ ngfactory
 output
 *.ngsummary.json
 *.ngfactory.ts
-/src/environments/versions.ts
+/src/environments/**
 tmp
