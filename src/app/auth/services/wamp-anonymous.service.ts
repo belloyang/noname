@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Client } from 'thruway.js';
-
+import { environment } from '../../../environments/environment';
 @Injectable()
 export class WampAnonymousService extends Client {
   constructor() {
-    super('ws://localhost:9200/ws', 'noname.daemon', {
+    super(environment.wsUrl, 'noname.daemon', {
       authmethods: ['anonymous'],
     });
   }

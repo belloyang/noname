@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Client } from 'thruway.js';
 import { Observable } from 'rxjs/Observable';
+import { environment } from '../../../environments/environment';
 
 @Injectable()
 export class WampTicketService extends Client {
   constructor() {
-    super('ws://localhost:9200/ws', 'noname.daemon');
+    super(environment.wsUrl, 'noname.daemon');
 
     this.onChallenge(challenge => {
       console.log('onChallenge called:', challenge);
