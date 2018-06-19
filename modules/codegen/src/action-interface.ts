@@ -42,8 +42,10 @@ export const getActionEnumName = _.flow(
   getActionCategoryToken,
   v => `${v}ActionType`
 );
-export const getActionEnumPropName = _.flow(getActionName, _.snakeCase, v =>
-  v.toUpperCase()
+export const getActionEnumPropName = _.flow(
+  getActionName,
+  _.snakeCase,
+  v => v.toUpperCase()
 );
 export const getActionUnionName = _.flow(
   getActionCategoryToken,

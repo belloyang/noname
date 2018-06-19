@@ -21,17 +21,23 @@ export function collectMetadata(
     .filter(collector.isExported)
     .filter(collector.isActionDescendent)
     .filter(m => !!collector.getType(m))
-    .map((enterface): ActionInterface => ({
-      name: enterface.name.getText(),
-      actionType: _.trim(
-        collector.getType(enterface)!.literal.getFullText(),
-        ' \'"`'
-      ),
-      properties: [
-        ...collector.getRequiredProperties(collector.getProperties(enterface)),
-        ...collector.getOptionalProperties(collector.getProperties(enterface)),
-      ],
-    }));
+    .map(
+      (enterface): ActionInterface => ({
+        name: enterface.name.getText(),
+        actionType: _.trim(
+          collector.getType(enterface)!.literal.getFullText(),
+          ' \'"`'
+        ),
+        properties: [
+          ...collector.getRequiredProperties(
+            collector.getProperties(enterface)
+          ),
+          ...collector.getOptionalProperties(
+            collector.getProperties(enterface)
+          ),
+        ],
+      })
+    );
 
   if (interfaces.length === 0) {
     undefined;

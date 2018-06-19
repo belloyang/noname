@@ -9,10 +9,10 @@ describe('WampTicketService', () => {
     });
   });
 
-  it(
-    'should be created',
-    inject([WampTicketService], (service: WampTicketService) => {
+  it('should be created', inject(
+    [WampTicketService],
+    (service: WampTicketService) => {
       expect(service).toBeTruthy();
-    })
-  );
+    }
+  ));
 });

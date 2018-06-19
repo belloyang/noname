@@ -21,12 +21,10 @@ export class AuthEffects {
     ofType(AuthActionTypes.Login),
     map((action: Login) => action.payload),
     exhaustMap((auth: Authenticate) =>
-      this.authService
-        .login(auth)
-        .pipe(
-          map(user => new LoginSuccess({ user })),
-          catchError(error => of(new LoginFailure(error)))
-        )
+      this.authService.login(auth).pipe(
+        map(user => new LoginSuccess({ user })),
+        catchError(error => of(new LoginFailure(error)))
+      )
     )
   );
 
@@ -35,12 +33,10 @@ export class AuthEffects {
     ofType(AuthActionTypes.ANONYMOUS_LOGIN),
     map((action: LoginAnonymously) => action.payload),
     exhaustMap((auth: Authenticate) =>
-      this.authService
-        .loginAnonymously(auth)
-        .pipe(
-          map(user => new LoginSuccess({ user })),
-          catchError(error => of(new LoginFailure(error)))
-        )
+      this.authService.loginAnonymously(auth).pipe(
+        map(user => new LoginSuccess({ user })),
+        catchError(error => of(new LoginFailure(error)))
+      )
     )
   );
 

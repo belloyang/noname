@@ -24,11 +24,11 @@ import { Book } from '../models/book';
    */
   styles: [
     `
-    mat-card-title {
-      display: flex;
-      justify-content: center;
-    }
-  `,
+      mat-card-title {
+        display: flex;
+        justify-content: center;
+      }
+    `,
   ],
 })
 export class CollectionPageComponent implements OnInit {

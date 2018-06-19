@@ -43,13 +43,11 @@ export class CollectionEffects {
   loadCollection$: Observable<Action> = this.actions$.pipe(
     ofType(CollectionActionTypes.Load),
     switchMap(() =>
-      this.db
-        .query('books')
-        .pipe(
-          toArray(),
-          map((books: Book[]) => new LoadSuccess(books)),
-          catchError(error => of(new LoadFail(error)))
-        )
+      this.db.query('books').pipe(
+        toArray(),
+        map((books: Book[]) => new LoadSuccess(books)),
+        catchError(error => of(new LoadFail(error)))
+      )
     )
   );
 
@@ -58,12 +56,10 @@ export class CollectionEffects {
     ofType(CollectionActionTypes.AddBook),
     map((action: AddBook) => action.payload),
     mergeMap(book =>
-      this.db
-        .insert('books', [book])
-        .pipe(
-          map(() => new AddBookSuccess(book)),
-          catchError(() => of(new AddBookFail(book)))
-        )
+      this.db.insert('books', [book]).pipe(
+        map(() => new AddBookSuccess(book)),
+        catchError(() => of(new AddBookFail(book)))
+      )
     )
   );
 
@@ -72,12 +68,10 @@ export class CollectionEffects {
     ofType(CollectionActionTypes.RemoveBook),
     map((action: RemoveBook) => action.payload),
     mergeMap(book =>
-      this.db
-        .executeWrite('books', 'delete', [book.id])
-        .pipe(
-          map(() => new RemoveBookSuccess(book)),
-          catchError(() => of(new RemoveBookFail(book)))
-        )
+      this.db.executeWrite('books', 'delete', [book.id]).pipe(
+        map(() => new RemoveBookSuccess(book)),
+        catchError(() => of(new RemoveBookFail(book)))
+      )
     )
   );
 

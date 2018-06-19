@@ -9,10 +9,10 @@ describe('WampAnonymousService', () => {
     });
   });
 
-  it(
-    'should be created',
-    inject([WampAnonymousService], (service: WampAnonymousService) => {
+  it('should be created', inject(
+    [WampAnonymousService],
+    (service: WampAnonymousService) => {
       expect(service).toBeTruthy();
-    })
-  );
+    }
+  ));
 });
