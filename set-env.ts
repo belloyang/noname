@@ -29,7 +29,7 @@ if (!wamp_router || wamp_router == '') {
 const envConfigFile = `
 export const environment = {
   production: ${isProd},
-  wsUrl: 'ws://${wamp_router}:9000/ws'
+  wsUrl: 'ws://${wamp_router}:9200/ws'
 };
 `;
 writeFile(targetPath, envConfigFile, function(err) {
